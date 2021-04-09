@@ -130,7 +130,6 @@
       @include gradient-bg($custom-checkbox-indicator-indeterminate-bg);
       @include box-shadow($custom-checkbox-indicator-indeterminate-box-shadow);
     }
-
     &::after {
       background-image: escape-svg($custom-checkbox-indicator-icon-indeterminate);
     }
@@ -140,7 +139,6 @@
     &:checked ~ .custom-control-label::before {
       @include gradient-bg($custom-control-indicator-checked-disabled-bg);
     }
-
     &:indeterminate ~ .custom-control-label::before {
       @include gradient-bg($custom-control-indicator-checked-disabled-bg);
     }

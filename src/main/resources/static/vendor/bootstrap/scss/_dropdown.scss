@@ -77,7 +77,6 @@
 
   .dropdown-toggle {
     @include caret(right);
-
     &::after {
       vertical-align: 0;
     }
@@ -95,7 +94,6 @@
 
   .dropdown-toggle {
     @include caret(left);
-
     &::before {
       vertical-align: 0;
     }

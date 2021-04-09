@@ -9,7 +9,6 @@
   line-height: 1;
   width: 12.5rem;
 }
-
 @keyframes noise-anim {
   $steps: 20;
   @for $i from 0 through $steps {
@@ -18,7 +17,6 @@
     }
   }
 }
-
 .error:after {
   content: attr(data-text);
   position: absolute;
@@ -40,7 +38,6 @@
     }
   }
 }
-
 .error:before {
   content: attr(data-text);
   position: absolute;
