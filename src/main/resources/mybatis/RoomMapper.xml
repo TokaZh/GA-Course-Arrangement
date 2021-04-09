@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tokaku.studemo.mapper.RoomMapper">
+
+    <!--    <select id="queryStuList" resultType="Student">-->
+    <!--        select * from db_school.tb_stu-->
+    <!--    </select>-->
+
+    <!--    <select id="queryStuByLimit" resultType="Student" parameterType="map">-->
+    <!--        select * from db_school.tb_stu  limit #{startPage},#{pageSize}-->
+    <!--    </select>-->
+
+    <!--&lt;!&ndash;    <select id="queryStuById" resultType="Student">&ndash;&gt;-->
+    <!--&lt;!&ndash;        select * from db_school.tb_stu where studyid = #{studyid}&ndash;&gt;-->
+    <!--&lt;!&ndash;    </select>&ndash;&gt;-->
+    <!--    <insert id="addStu" parameterType="Student">-->
+    <!--        insert into db_school.tb_stu(sno,name,password,grade,class) values (#{sno},#{name},#{password},#{grade},#{clazz})-->
+    <!--    </insert>-->
+    <!--    <update id="updateStu" parameterType="Student">-->
+    <!--        update db_school.tb_stu-->
+    <!--        <set>-->
+    <!--            <if test="sno">-->
+    <!--                sno = #{sno},-->
+    <!--            </if>-->
+    <!--            <if test="name">-->
+    <!--                name = #{name},-->
+    <!--            </if>-->
+    <!--            <if test="password">-->
+    <!--                password = #{password},-->
+    <!--            </if>-->
+    <!--            <if test="grade">-->
+    <!--                age = #{grade},-->
+    <!--            </if>-->
+    <!--            <if test="clazz">-->
+    <!--                clazz = #{clazz},-->
+    <!--            </if>-->
+    <!--        </set>-->
+    <!--        where sno = #{sno}-->
+    <!--    </update>-->
+
+    <!--    <delete id="deleteStu" parameterType="Student">-->
+    <!--        delete from db_school.tb_stu where sno=#{sno}-->
+    <!--    </delete>-->
+
+    <!--    <select id="querySize" resultType="int">-->
+    <!--        select count(*) from db_school.tb_stu-->
+    <!--    </select>-->
+
+</mapper>
