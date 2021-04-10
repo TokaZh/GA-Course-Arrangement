@@ -14,12 +14,16 @@ import java.util.List;
 @Controller
 public class StudentController {
 
-    @Autowired
     private StudentService stuService;
+
+    @Autowired
+    public void StudentService(StudentService studentService) {
+        this.stuService = studentService;
+    }
 
     @RequestMapping("/student")
     public String GetStudents(Model model) {
-        List<Student> students = stuService.queryStudentList();
+        List<Student> students = stuService.getStudentList();
         model.addAttribute("students", students);
         return "student";
     }

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>教务管理系统1.0 - Tables</title>
+    <title>教务管理系统1.0 - TeacherTables</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -49,62 +49,73 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">学生信息管理</h1>
-
-                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
-                    逐个添加
-                </a>
-                <a class="btn btn-success" href="">Excel批量导入</a>
-
+                <h1 class="h3 mb-2 text-gray-800">教师信息管理</h1>
                 <p class="mb-4">详细描述</p>
 
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">学生信息表</h6>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <!-- DataTales Example -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">教师信息表</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr>
+                                            <th>工号</th>
+                                            <th>姓名</th>
+                                            <th>所任课程</th>
+                                            <th>联系电话</th>
+                                            <th>编辑</th>
+                                        </tr>
+                                        </thead>
+                                        <tfoot>
+                                        <tr>
+                                            <th>工号</th>
+                                            <th>姓名</th>
+                                            <th>所任课程</th>
+                                            <th>联系电话</th>
+                                            <th>编辑</th>
+                                        </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        <tr th:each="teacher:${teachers}">
+                                            <td th:text="${teacher.getTeacherId()}"></td>
+                                            <td th:text="${teacher.getTeacherName()}"></td>
+                                            <td th:text="${teacher.getCourseId()}"></td>
+                                            <td th:text="${teacher.getTelephone()}"></td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-primary"
+                                                       th:href="@{/updateTeacher/} + ${teacher.getTeacherId()}">编辑</a>
+                                                    <a class="btn btn-danger"
+                                                       th:href="@{/deleteTeacher/} + ${teacher.getTeacherId()}">删除</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>工号</th>
-                                    <th>姓名</th>
-                                    <th>联系电话</th>
-                                    <th>编辑</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>工号</th>
-                                    <th>姓名</th>
-                                    <th>联系电话</th>
-                                    <th>编辑</th>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                <form action="/updateTeacher" method="post">
-                                    <tr th:each="teacher:${teachers}">
-                                        <td th:text="${teacher.getTno()}"></td>
-                                        <td th:text="${teacher.getTname()}"></td>
-                                        <!--                                            <td th:text="${teacher.getGrade()}"></td>-->
-                                        <!--                                            <td th:text="${teacher.getClazz()}"></td>-->
-                                        <!--                                            <td>-->
-                                        <!--                                                <div class="btn-group">-->
-                                        <!--                                                    <a class="btn btn-group-sm btn-primary"-->
-                                        <!--                                                       th:href="@{/updateStu/} + ${stu.getStudyid()}">编辑</a>-->
-                                        <!--                                                    <a class="btn btn-group-sm btn-danger"-->
-                                        <!--                                                       th:href="@{/deleteStu/} + ${stu.getStudyid()}">删除</a>-->
-                                        <!--                                                </div>-->
-                                        <!--                                            </td>-->
-                                    </tr>
-                                </form>
-                                </tbody>
-                            </table>
+                    <div class="col-lg-3">
+                        <div class="card shadow mb-3">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">添加数据</h6>
+                            </div>
+                            <div class="card-body">
+                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+                                    添加
+                                </a>
+                                <a class="btn btn-success" data-toggle="modal" data-target="#addModal"
+                                   href="">Excel批量导入</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
             <!-- /.container-fluid -->
 
@@ -128,13 +139,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addAllStu">批量添加学生</h5>
+                <h5 class="modal-title" id="addAllStu">批量添加</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                批量添加学生
+                <input type="file" name="file">
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>

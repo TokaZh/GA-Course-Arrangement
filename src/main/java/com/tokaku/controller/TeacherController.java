@@ -15,17 +15,9 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
-//    @RequestMapping("/stus")
-//    public String GetUser(Model model) {
-//        List<Student> stus = stuService.queryStuList();
-//        model.addAttribute("stus", stus);
-//        return "student/students_list";
-//    }
-
-
     @RequestMapping("/teacher")
     public String GetUserLimit(Model model) {
-        List<Teacher> teachers = teacherService.queryTeacherList();
+        List<Teacher> teachers = teacherService.getTeacherList();
         model.addAttribute("teachers", teachers);
         return "teacher";
     }

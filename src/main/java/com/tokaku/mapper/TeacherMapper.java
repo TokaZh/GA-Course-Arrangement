@@ -9,13 +9,13 @@ import java.util.List;
 @Mapper
 @Repository
 public interface TeacherMapper {
-    Teacher TeacherCheck(String username, String password);
+    Teacher TeacherCheck(String teacherId, String teacherPassword);
 
-    int addTeacher();
-
-    int updateTeacher();
-
-    int deleteTeacher();
+//    int addTeacher();
+//
+//    int updateTeacher();
+//
+//    int deleteTeacher();
 
     List<Teacher> queryTeacherList();
 

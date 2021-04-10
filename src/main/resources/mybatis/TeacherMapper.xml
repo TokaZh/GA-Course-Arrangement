@@ -3,17 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tokaku.mapper.TeacherMapper">
+    <resultMap id="TeacherMap" type="Teacher">
+        <id property="teacherId" column="teacher_id"/>
+        <result property="teacherName" column="teacher_name"/>
+        <result property="telephone" column="telephone"/>
+        <result property="teacherPassword" column="teacher_password"/>
+        <result property="course_id" column="courseId"/>
+    </resultMap>
 
-    <select id="TeacherCheck" parameterType="String" resultType="Teacher">
+    <select id="TeacherCheck" parameterType="String" resultMap="TeacherMap">
         select *
         from db_school.teacher
-        where tno = #{username}
-          and tpwd = #{password}
+        where teacher_id = #{username}
+          and teacher_password = #{password}
     </select>
 
-    <!--    <select id="queryStuList" resultType="Student">-->
-    <!--        select * from db_school.tb_stu-->
-    <!--    </select>-->
+    <select id="queryTeacherList" resultMap="TeacherMap">
+        select *
+        from db_school.teacher
+    </select>
 
     <!--    <select id="queryStuByLimit" resultType="Student" parameterType="map">-->
     <!--        select * from db_school.tb_stu  limit #{startPage},#{pageSize}-->

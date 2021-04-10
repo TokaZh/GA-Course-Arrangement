@@ -30,7 +30,7 @@ public class TeacherServiceImpl implements TeacherService {
 //    }
 
     @Override
-    public List<Teacher> queryTeacherList() {
+    public List<Teacher> getTeacherList() {
         return teacherMapper.queryTeacherList();
     }
 

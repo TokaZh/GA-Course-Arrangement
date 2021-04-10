@@ -30,8 +30,8 @@ public class StudentServiceImpl implements StudentService {
 //    }
 
     @Override
-    public List<Student> queryStudentList() {
-        return studentMapper.queryStuList();
+    public List<Student> getStudentList() {
+        return studentMapper.queryStudentList();
     }
 
     //    @Override

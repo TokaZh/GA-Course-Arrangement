@@ -4,7 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tokaku.mapper.CourseMapper">
 
-    <select id="queryCourseList" resultType="Course">
+    <resultMap id="CourseMap" type="Course">
+        <id property="courseId" column="course_id"/>
+        <result property="courseName" column="course_name"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <select id="queryCourseList" resultMap="CourseMap">
         select *
         from db_school.course
     </select>

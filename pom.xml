@@ -9,9 +9,9 @@
         <relativePath/> <!-- lo``okup parent from repository -->
     </parent>
     <groupId>com.tokaku</groupId>
-    <artifactId>studemo</artifactId>
+    <artifactId>coursearrangementsystem</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>studemo</name>
+    <name>coursearrangementsystem</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
@@ -62,8 +62,11 @@
             <artifactId>poi-ooxml</artifactId>
             <version>5.0.0</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
@@ -71,6 +74,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!--fork:设置True，否则可能devtools不会起作用-->
+                    <fork>true</fork>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -1,7 +1,8 @@
 package com.tokaku;
 
-import com.tokaku.mapper.StudentMapper;
-import com.tokaku.pojo.Student;
+import com.tokaku.pojo.Course;
+import com.tokaku.service.CourseService;
+import com.tokaku.service.IImportExcelService;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,36 @@ import java.util.List;
 @SpringBootTest
 class ApplicationTests {
 
+    //    @Autowired
+//    TeacherService teacherService;
+//    @Autowired
+//    StudentService studentService;
     @Autowired
-    StudentMapper studentMapper;
+    CourseService courseService;
+
 
     @Test
     void contextLoads() {
-        List<Student> students = studentMapper.queryStuList();
-        for (Student student : students) {
-            System.out.println(student);
+//        List<Teacher> teachers = teacherService.getTeacherList();
+//        for (Teacher student : teachers) {
+//            System.out.println(student);
+//        }
+//        List<Student> studentList = studentService.getStudentList();
+//        for (Student student : studentList) {
+//            System.out.println(student);
+//        }
+        List<Course> courseList = courseService.getCourseList();
+        for (Course course : courseList) {
+            System.out.println(course);
         }
+    }
+
+    @Autowired
+    IImportExcelService iImportExcelService;
+
+    @Test
+    void fileTest() {
+
     }
 
 }

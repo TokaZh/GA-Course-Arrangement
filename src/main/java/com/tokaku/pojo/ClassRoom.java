@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class Course {
-    private int courseId;
-    private String courseName;
-    private String type;
+public class ClassRoom {
+    private int roomId;
+    private int size;
+    private int type;
 }

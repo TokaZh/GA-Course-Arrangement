@@ -1,7 +1,7 @@
 package com.tokaku.controller;
 
-import com.tokaku.pojo.Student;
-import com.tokaku.service.StudentService;
+import com.tokaku.pojo.Course;
+import com.tokaku.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,22 +12,18 @@ import java.util.List;
 @Controller
 public class CourseController {
 
+    private CourseService courseService;
+
     @Autowired
-    private StudentService stuService;
-
-//    @RequestMapping("/stus")
-//    public String GetUser(Model model) {
-//        List<Student> stus = stuService.queryStuList();
-//        model.addAttribute("stus", stus);
-//        return "student/students_list";
-//    }
-
+    public void setCourseService(CourseService courseService) {
+        this.courseService = courseService;
+    }
 
     @RequestMapping("/course")
     public String GetUserLimit(Model model) {
-        List<Student> students = stuService.queryStudentList();
-        model.addAttribute("stus", students);
-        return "student";
+        List<Course> courses = courseService.getCourseList();
+        model.addAttribute("courses", courses);
+        return "course";
     }
 
 //    @PostMapping("/stu")

@@ -4,14 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tokaku.mapper.StudentMapper">
 
-    <select id="StudentCheck" parameterType="String" resultType="Student">
+    <resultMap id="StudentMap" type="Student">
+        <id property="studentId" column="student_id"/>
+        <result property="studentName" column="student_name"/>
+        <result property="studentPassword" column="student_password"/>
+        <result property="grade" column="grade"/>
+        <result property="clazz" column="class"/>
+    </resultMap>
+
+    <select id="StudentCheck" parameterType="String" resultMap="StudentMap">
         select *
         from db_school.student
-        where sno = #{username}
-          and spwd = #{password}
+        where student_id = #{studentName}
+          and student_password = #{studentPassword}
     </select>
 
-    <select id="queryStuList" resultType="Student">
+    <select id="queryStudentList" resultMap="StudentMap">
         select *
         from db_school.student
     </select>
@@ -51,7 +59,7 @@
     <delete id="deleteStudent" parameterType="Student">
         delete
         from db_school.student
-        where sno = #{sno}
+        where student_id = #{sno}
     </delete>
 
     <!--    <select id="querySize" resultType="int">-->

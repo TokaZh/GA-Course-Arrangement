@@ -15,10 +15,18 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LoginController {
 
-    @Autowired
     private StudentMapper studentMapper;
-    @Autowired
     private TeacherMapper teacherMapper;
+
+    @Autowired
+    public void StudentMapper(StudentMapper studentMapper) {
+        this.studentMapper = studentMapper;
+    }
+
+    @Autowired
+    public void TeacherMapper(TeacherMapper teacherMapper) {
+        this.teacherMapper = teacherMapper;
+    }
 
     @RequestMapping("/login")
     public String login(HttpSession session) {

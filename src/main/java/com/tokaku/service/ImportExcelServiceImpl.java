@@ -18,32 +18,30 @@ public class ImportExcelServiceImpl extends ImportExcelBaseService implements II
 
     @Override
     public List<User> importExcelWithSimple(MultipartFile file, HttpServletRequest req, HttpServletResponse resp) {
-        int rowNum = 0;//已取值的行数
-        int colNum = 0;//列号
-        int realRowCount = 0;//真正有数据的行数
+        int colNum;
+        User user;
+        List<User> list = new ArrayList<>();
+
+        Workbook workbook = null;
+        Sheet sheet = null;
 
         //得到工作空间
-        Workbook workbook = null;
         try {
             workbook = super.getWorkbookByInputStream(file.getInputStream(), file.getOriginalFilename());
-        } catch (IOException e) {
+            sheet = super.getSheetByWorkbook(workbook, 0);
+            if (sheet.getRow(2000) != null) {
+                throw new RuntimeException("系统已限制单批次导入数据必须小于或等于2000条！");
+            }
+        } catch (RuntimeException | IOException e) {
             e.printStackTrace();
+            System.out.println("----------------------------");
+            System.out.println(e.getMessage());
+            return null;
         }
-
-        //得到工作表
-        Sheet sheet = super.getSheetByWorkbook(workbook, 0);
-        if (sheet.getRow(2000) != null) {
-            throw new RuntimeException("系统已限制单批次导入数据必须小于或等于2000条！");
-        }
-
-        realRowCount = sheet.getPhysicalNumberOfRows();
-        List<User> list = new ArrayList<>();
-        User user = null;
 
         for (Row row : sheet) {
-            if (realRowCount == rowNum) {
-                break;
-            }
+            colNum = 0;
+            user = new User();
 
             if (super.isBlankRow(row)) {//空行跳过
                 continue;
@@ -57,19 +55,20 @@ public class ImportExcelServiceImpl extends ImportExcelBaseService implements II
                 }
             }
 
-            rowNum++;
-            colNum = 1;
-            user = new User();
+            //这里要添加个try/catch用于捕捉行出现错误值，并且跳过
+            try {
+                super.validCellValue(sheet, row, colNum, "账号");
+                user.setId(super.getCellValue(sheet, row, colNum++));
 
-            super.validCellValue(sheet, row, ++colNum, "账号");
-            user.setId(super.getCellValue(sheet, row, colNum - 1));
+                super.validCellValue(sheet, row, colNum, "姓名");
+                user.setName(super.getCellValue(sheet, row, colNum++));
 
-            super.validCellValue(sheet, row, ++colNum, "姓名");
-            user.setName(super.getCellValue(sheet, row, colNum - 1));
-
-            super.validCellValue(sheet, row, ++colNum, "密码");
-            user.setPassword(super.getCellValue(sheet, row, colNum - 1));
-
+                super.validCellValue(sheet, row, colNum, "密码");
+                user.setPassword(super.getCellValue(sheet, row, colNum));
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                continue;
+            }
             list.add(user);
         }
 

@@ -3,17 +3,17 @@ package com.tokaku.pojo;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
-@Data
 @Component
+@Data
 public class Teacher extends User {
-    private String tno;
-    private String tname;
-    private String password;
-    private String manager;
-    private String cid;
+    private String teacherId;
+    private String teacherName;
+    private String telephone;
+    private String teacherPassword;
+    private String courseId;
 
     @Override
     public String getName() {
-        return tname;
+        return teacherName;
     }
 }
