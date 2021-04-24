@@ -17,6 +17,6 @@ public interface TeacherMapper {
 //
 //    int deleteTeacher();
 
-    List<Teacher> queryTeacherList();
+    List<Teacher> selectTeacherList();
 
 }

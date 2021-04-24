@@ -18,7 +18,7 @@
           and teacher_password = #{password}
     </select>
 
-    <select id="queryTeacherList" resultMap="TeacherMap">
+    <select id="selectTeacherList" resultMap="TeacherMap">
         select *
         from db_school.teacher
     </select>

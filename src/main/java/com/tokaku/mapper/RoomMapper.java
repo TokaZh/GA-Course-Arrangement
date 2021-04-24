@@ -1,6 +1,6 @@
 package com.tokaku.mapper;
 
-import com.tokaku.pojo.Student;
+import com.tokaku.pojo.ClassRoom;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +15,5 @@ public interface RoomMapper {
 
     int deleteRoom();
 
-    List<Student> queryRoomList();
+    List<ClassRoom> selectRoomList();
 }

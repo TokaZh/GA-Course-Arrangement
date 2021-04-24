@@ -12,7 +12,7 @@ public interface TeacherService {
 //
 //    List<Student> queryStuByLimit(int startpage, int pageSize);
 
-    List<Teacher> getTeacherList();
+    List<Teacher> selectTeacherList();
 
 //    boolean addStu(Student student);
 //

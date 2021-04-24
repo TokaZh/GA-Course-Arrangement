@@ -1,7 +1,8 @@
-package com.tokaku.service;
+package com.tokaku.service.impl;
 
-import com.tokaku.mapper.TeacherMapper;
-import com.tokaku.pojo.Teacher;
+import com.tokaku.mapper.StudentMapper;
+import com.tokaku.pojo.Student;
+import com.tokaku.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +10,14 @@ import java.util.List;
 
 
 @Service
-public class TeacherServiceImpl implements TeacherService {
+public class StudentServiceImpl implements StudentService {
+
+    private StudentMapper studentMapper;
 
     @Autowired
-    private TeacherMapper teacherMapper;
+    private void StudentMapper(StudentMapper studentMapper) {
+        this.studentMapper = studentMapper;
+    }
 
 //    @Override
 //    public int querySize() {
@@ -30,11 +35,11 @@ public class TeacherServiceImpl implements TeacherService {
 //    }
 
     @Override
-    public List<Teacher> getTeacherList() {
-        return teacherMapper.queryTeacherList();
+    public List<Student> selectStudentList() {
+        return studentMapper.selectStudentList();
     }
 
-//    @Override
+    //    @Override
 //    public boolean addStu(Student student) {
 //        if (studentMapper.queryStuById(student.getStudyid()) == null) {
 //            int age = AgeUtils.getAge(student.getBirth());
@@ -52,8 +57,8 @@ public class TeacherServiceImpl implements TeacherService {
 //        return studentMapper.updateStu(student);
 //    }
 //
-//    @Override
-//    public int deleteStu(String studyid) {
-//        return studentMapper.deleteStu(studyid);
-//    }
+    @Override
+    public int deleteStudent(String sno) {
+        return studentMapper.deleteStu(sno);
+    }
 }

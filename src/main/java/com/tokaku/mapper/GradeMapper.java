@@ -1,6 +1,6 @@
 package com.tokaku.mapper;
 
-import com.tokaku.pojo.Schedule;
+import com.tokaku.pojo.Grade;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -8,12 +8,8 @@ import java.util.List;
 
 @Mapper
 @Repository
-public interface ScheduleMapper {
-    int addCur();
+public interface GradeMapper {
+    List<Grade> selectGradeList();
 
-    int updateCur();
-
-    int deleteCur();
-
-    List<Schedule> selectScheduleList();
+    Grade selectGradeByMajor();
 }

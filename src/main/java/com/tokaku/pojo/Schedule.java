@@ -1,15 +1,14 @@
 package com.tokaku.pojo;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
 @Component
+@Data
 public class Schedule {
-    private Integer id;
-    private String cname;
-    private String tname;
-    private String classroom;
-    private Integer grade;
-    private Integer classid;
-    private Integer time;
-    private String type;
+    private int scheduleId;
+    private int courseId;
+    private int teacherId;
+    private int classId;
+    private int timePart;
 }

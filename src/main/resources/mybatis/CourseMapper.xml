@@ -7,14 +7,38 @@
     <resultMap id="CourseMap" type="Course">
         <id property="courseId" column="course_id"/>
         <result property="courseName" column="course_name"/>
+        <result property="score" column="score"/>
+        <result property="time" column="time"/>
         <result property="type" column="type"/>
+        <result property="majorId" column="major_id"/>
     </resultMap>
 
-    <select id="queryCourseList" resultMap="CourseMap">
+    <select id="selectCourseList" resultMap="CourseMap">
         select *
-        from db_school.course
+        from course
     </select>
 
+    <select id="selectCourseByCourseId" parameterType="int" resultMap="CourseMap">
+        select *
+        from course
+        where course_id = ${courseId}
+    </select>
+
+    <!--    <select id="selectCourseByGradeId" parameterType="int" resultMap="CourseMap">-->
+    <!--        select * from course-->
+    <!--        where grade_id=${gradeId}-->
+    <!--    </select>-->
+
+    <insert id="addCourse" parameterType="Course">
+        insert into course(course_id, course_name, score, time, type, major_id)
+        values (#{courseId}, #{courseName}, #{score}, #{time}, #{type}, #{majorId})
+    </insert>
+
+    <delete id="deleteCourseByCourseId" parameterType="int">
+        delete
+        from course
+        where course_id = #{courseId}
+    </delete>
     <!--    <select id="queryStuByLimit" resultType="Student" parameterType="map">-->
     <!--        select * from db_school.tb_stu  limit #{startPage},#{pageSize}-->
     <!--    </select>-->
@@ -22,9 +46,7 @@
     <!--&lt;!&ndash;    <select id="queryStuById" resultType="Student">&ndash;&gt;-->
     <!--&lt;!&ndash;        select * from db_school.tb_stu where studyid = #{studyid}&ndash;&gt;-->
     <!--&lt;!&ndash;    </select>&ndash;&gt;-->
-    <!--    <insert id="addStu" parameterType="Student">-->
-    <!--        insert into db_school.tb_stu(sno,name,password,grade,class) values (#{sno},#{name},#{password},#{grade},#{clazz})-->
-    <!--    </insert>-->
+
     <!--    <update id="updateStu" parameterType="Student">-->
     <!--        update db_school.tb_stu-->
     <!--        <set>-->

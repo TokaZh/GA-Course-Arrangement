@@ -17,5 +17,5 @@ public interface StudentMapper {
 
     int deleteStu(String sno);
 
-    List<Student> queryStudentList();
+    List<Student> selectStudentList();
 }

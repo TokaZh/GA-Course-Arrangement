@@ -17,7 +17,7 @@ public class TeacherController {
 
     @RequestMapping("/teacher")
     public String GetUserLimit(Model model) {
-        List<Teacher> teachers = teacherService.getTeacherList();
+        List<Teacher> teachers = teacherService.selectTeacherList();
         model.addAttribute("teachers", teachers);
         return "teacher";
     }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 public class Teacher extends User {
-    private String teacherId;
+    private String teacherId;//8位长度
     private String teacherName;
     private String telephone;
     private String teacherPassword;

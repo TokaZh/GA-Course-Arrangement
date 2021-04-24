@@ -14,14 +14,14 @@
 
     <select id="StudentCheck" parameterType="String" resultMap="StudentMap">
         select *
-        from db_school.student
+        from student
         where student_id = #{studentName}
           and student_password = #{studentPassword}
     </select>
 
-    <select id="queryStudentList" resultMap="StudentMap">
+    <select id="selectStudentList" resultMap="StudentMap">
         select *
-        from db_school.student
+        from student
     </select>
 
     <!--    <select id="queryStuByLimit" resultType="Student" parameterType="map">-->

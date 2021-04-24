@@ -12,7 +12,7 @@ public interface StudentService {
 //
 //    List<Student> queryStuByLimit(int startpage, int pageSize);
 
-    List<Student> getStudentList();
+    List<Student> selectStudentList();
 
     //    boolean addStu(Student student);
 //

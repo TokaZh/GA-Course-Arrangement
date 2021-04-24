@@ -4,9 +4,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tokaku.mapper.ScheduleMapper">
 
-    <!--        <select id="queryStuList" resultType="Schedule">-->
-    <!--            select * from db_school.Schedule-->
-    <!--        </select>-->
+    <resultMap id="ScheduleMap" type="Schedule">
+        <id property="scheduleId" column="schedule_id"/>
+        <result property="courseId" column="course_id"/>
+        <result property="teacherId" column="teacher_id"/>
+        <result property="classId" column="class_id"/>
+        <result property="timePart" column="time_part"/>
+    </resultMap>
+
+
+    <select id="selectScheduleByClassId" parameterType="int" resultMap="ScheduleMap">
+        select *
+        from schedule
+        where class_id = #{classId}
+    </select>
+
+    <select id="selectScheduleByTeacherId" parameterType="int" resultMap="ScheduleMap">
+        select *
+        from schedule
+        where teacher_id = #{teacherId}
+    </select>
 
     <!--    <select id="queryStuByLimit" resultType="Student" parameterType="map">-->
     <!--        select * from db_school.tb_stu  limit #{startPage},#{pageSize}-->

@@ -2,9 +2,17 @@ package com.tokaku.service;
 
 import com.tokaku.pojo.Course;
 
-import java.util.List;
+import java.util.Set;
 
 public interface CourseService {
+
+    Set<Course> selectCourseList();
+
+//    List<Course> queryCourseByGradeId(Grade grade);
+
+    int deleteCourseByCourseId(int courseId);
+
+    boolean addCourse(Course course);
 
 //    int querySize();
 //
@@ -12,7 +20,6 @@ public interface CourseService {
 //
 //    List<Student> queryStuByLimit(int startpage, int pageSize);
 
-    List<Course> getCourseList();
 
 //    boolean addStu(Student student);
 //
