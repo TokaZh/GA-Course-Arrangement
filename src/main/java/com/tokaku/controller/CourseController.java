@@ -29,11 +29,18 @@ public class CourseController {
     public String GetUserLimit(Model model) {
         Set<Course> courses = courseService.selectCourseList();
         model.addAttribute("courses", courses);
-        return "course";
+        return "/course/list";
     }
 
-    @PostMapping("/course")
-    public String addStu(Course course, HttpServletResponse response) {
+    @GetMapping("/course/add")
+    public String add() {
+        return "/course/add";
+    }
+
+
+    @PostMapping("/course/addCourse")
+    public String addCourse(Course course, HttpServletResponse response) {
+        System.out.println(course);
         if (courseService.addCourse(course))
             return "redirect:/course";
         else {
@@ -51,26 +58,22 @@ public class CourseController {
     }
 
     @GetMapping("/deleteCourse/{courseId}")
-    public String deleteStu(@PathVariable("courseId") int courseId) {
+    public String deleteCourse(@PathVariable("courseId") int courseId) {
         courseService.deleteCourseByCourseId(courseId);
         return "redirect:/course";
     }
-//
-//
-//    //跳转到修改页面 (链结形式-getmapping)
 
-//
-//    @PostMapping("/updateStu")
-//    public String updateStu(Student student) {
-//        stuService.updateStu(student);
-//        return "redirect:/stus";
-//    }
-//
-//
-//@GetMapping("/updateStu/{studyid}")
-//public String addstu(@PathVariable("studyid") String studyid, Model model) {
-//    Student student = stuService.queryStuById(studyid);
-//    model.addAttribute("stu", student);
-//    return "student/student_update";
+    @GetMapping("/updateCourse/{course}")
+    public String updateCourse(@PathVariable("course") Course course, Model model) {
+//        courseService.updateCourse(course);
+        model.addAttribute("stu", course);
+        return "/course/edit";
+    }
+
+    @PostMapping("/updateCourse")
+    public String updateStu(Course course) {
+        courseService.updateCourse(course);
+        return "redirect:/course";
+    }
 
 }

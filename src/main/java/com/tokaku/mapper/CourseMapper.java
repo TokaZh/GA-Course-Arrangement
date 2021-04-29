@@ -4,6 +4,7 @@ import com.tokaku.pojo.Course;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Set;
 
 @Mapper
@@ -12,13 +13,13 @@ public interface CourseMapper {
 
     Set<Course> selectCourseList();
 
-    Course selectCourseByCourseId(int courseId);
+    Course selectCourseByCourseId(String courseId);
 
-//    List<Course> selectCourseByGradeId(int gradeId);
+    List<Course> queryCourseByGradeAndMajor(int major, int grade);
 
     int addCourse(Course course);
 
-    int updateCourse();
+    int updateCourse(Course course);
 
     int deleteCourseByCourseId(int courseId);
 

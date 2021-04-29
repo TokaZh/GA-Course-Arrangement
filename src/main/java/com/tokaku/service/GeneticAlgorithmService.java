@@ -9,19 +9,20 @@ import java.util.Set;
 
 public interface GeneticAlgorithmService {
 
-    HashMap<Integer, Integer> initGene(Set<Course> courseList, int weekSize);
+    HashMap<String, Integer> initGene(Set<Course> courseList, int weekSize);
 
-    String[] initChromosome(int timeSize, HashMap<Integer, Integer> genes);
+    String[] initChromosome(int timeSize, HashMap<String, Integer> genes);
 
-    String[][] initIndividual(int classNum, int timeSize, HashMap<Integer, Integer> genes);
+    String[][] initIndividual(int classNum, int timeSize, HashMap<String, Integer> genes);
 
     HashMap<Integer, Set<Integer>> checkConflict(int classNum, int timeSize, String[][] individual);
 
     String[][] dealConflict(String[][] individual, HashMap<Integer, Set<Integer>> signMap);
 
-    Set<String[][]> initPopulation(int populationSize);
+    //weeksize从学期数据得到
+    Set<String[][]> initPopulation(Set<Course> courses, int populationSize, int weekSize);
 
-    int getFitness(String[][] chromosome);
+    int getFitness(String[][] chromosome, Set<Course> courses);
 
     //选择(selection)；交叉(crossover)；变异(mutation)
     Set<List<Schedule>> selection();

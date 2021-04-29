@@ -2,17 +2,20 @@ package com.tokaku.service;
 
 import com.tokaku.pojo.Course;
 
+import java.util.List;
 import java.util.Set;
 
 public interface CourseService {
 
     Set<Course> selectCourseList();
 
-//    List<Course> queryCourseByGradeId(Grade grade);
-
     int deleteCourseByCourseId(int courseId);
 
+    List<Course> queryCourseByGradeAndMajor(int grade, int major);
+
     boolean addCourse(Course course);
+
+    int updateCourse(Course course);
 
 //    int querySize();
 //

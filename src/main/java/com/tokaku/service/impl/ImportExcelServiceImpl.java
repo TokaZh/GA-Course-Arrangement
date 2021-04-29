@@ -65,7 +65,7 @@ public class ImportExcelServiceImpl implements ImportExcelService {
         if (row.hasNext()) row.next();
         while (row.hasNext()) {
             String[] index =
-                    {"课程号", "课程名", "学分", "学时", "教室类型", "专业"};
+                    {"课程号", "课程名", "类型", "学分", "学时", "专业", "学期"};
             Course course = getCourse(sheet, row.next(), index);
             if (course == null) continue;
             set.add(course);
@@ -87,11 +87,12 @@ public class ImportExcelServiceImpl implements ImportExcelService {
         colNum = 0;
         int courseId = Integer.parseInt(getCellValue(sheet, row, colNum++));
         String courseName = getCellValue(sheet, row, colNum++);
+        int type = Integer.parseInt(getCellValue(sheet, row, colNum++));
         int courseScore = Integer.parseInt(getCellValue(sheet, row, colNum++));
         int time = Integer.parseInt(getCellValue(sheet, row, colNum++));
-        int type = Integer.parseInt(getCellValue(sheet, row, colNum++));
         int majorId = Integer.parseInt(getCellValue(sheet, row, colNum));
-        return new Course(courseId, courseName, courseScore, time, type, majorId, 0);
+        int grade = Integer.parseInt(getCellValue(sheet, row, colNum));
+        return new Course(courseId, courseName, type, courseScore, time, majorId, grade);
 
     }
 }

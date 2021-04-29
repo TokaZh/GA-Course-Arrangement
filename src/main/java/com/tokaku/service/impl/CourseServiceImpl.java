@@ -6,6 +6,7 @@ import com.tokaku.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -20,6 +21,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Set<Course> selectCourseList() {
         return courseMapper.selectCourseList();
+    }
+
+    @Override
+    public List<Course> queryCourseByGradeAndMajor(int major, int grade) {
+        return courseMapper.queryCourseByGradeAndMajor(major, grade);
     }
 
 //    @Override
@@ -40,6 +46,11 @@ public class CourseServiceImpl implements CourseService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public int updateCourse(Course course) {
+        return courseMapper.updateCourse(course);
     }
 
 

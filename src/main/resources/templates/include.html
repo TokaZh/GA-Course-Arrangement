@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment=header(title)>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+
+  <title th:text="${title}"></title>
+
+  <link th:rel="shortcut icon" href="favicon.ico">
+  <link th:href="@{/css/bootstrap.min.css?v=3.3.7}" rel="stylesheet">
+  <link th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+  <link th:href="@{/css/animate.css}" rel="stylesheet">
+  <link th:href="@{/css/style.css?v=4.1.0}" rel="stylesheet"/>
+  <link th:href="@{/css/plugins/dataTables/dataTables.bootstrap.css}" rel="stylesheet">
+
+  <!-- Drop Zone -->
+  <link th:href="@{/css/plugins/dropzone/basic.css}" rel="stylesheet">
+  <link th:href="@{/css/plugins/dropzone/dropzone.css}" rel="stylesheet">
+  <!-- Sweet Alert -->
+  <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+
+</head>
+<div th:fragment="footer">
+
+  <!-- 全局js -->
+  <script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+  <script th:src="@{/js/bootstrap.min.js?v=3.3.7}"></script>
+
+  <!-- 自定义js gohome -->
+  <script th:src="@{/js/content.js?v=1.0.0}"></script>
+
+  <!-- jQuery Validation plugin javascript-->
+  <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+  <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+
+  <script th:src="@{/js/demo/form-validate-demo.js}"></script>
+
+
+  <script src="js/plugins/jeditable/jquery.jeditable.js"></script>
+
+  <!-- Data Tables -->
+  <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+  <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+</div>
+
+<body class="gray-bg">
+
+</body>
+
+</html>

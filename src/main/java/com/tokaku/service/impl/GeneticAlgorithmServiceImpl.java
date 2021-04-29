@@ -13,8 +13,8 @@ import static com.tokaku.utils.RandomUtil.initTimePart;
 public class GeneticAlgorithmServiceImpl implements GeneticAlgorithmService {
     //生成基因库（周课时）,传入：学期课表 传出:周课表
     @Override
-    public HashMap<Integer, Integer> initGene(Set<Course> courseList, int weekSize) {
-        HashMap<Integer, Integer> genes = new HashMap<>();
+    public HashMap<String, Integer> initGene(Set<Course> courseList, int weekSize) {
+        HashMap<String, Integer> genes = new HashMap<>();
         for (Course course : courseList) {
             int weekTime = course.getTime() / weekSize;//2位
             genes.put(course.getCourseId(), weekTime);
@@ -24,9 +24,9 @@ public class GeneticAlgorithmServiceImpl implements GeneticAlgorithmService {
 
     //生成染色体(一个班的周课表)
     @Override
-    public String[] initChromosome(int timeSize, HashMap<Integer, Integer> genes) {
+    public String[] initChromosome(int timeSize, HashMap<String, Integer> genes) {
         String[] chromosome = new String[timeSize];
-        for (int gene : genes.keySet()) {
+        for (String gene : genes.keySet()) {
             for (int i = 0; i < genes.get(gene); i++) {
                 //随机生成空时间片
                 int timePart = initTimePart(timeSize);
@@ -43,7 +43,7 @@ public class GeneticAlgorithmServiceImpl implements GeneticAlgorithmService {
     }
 
     @Override
-    public String[][] initIndividual(int classNum, int timeSize, HashMap<Integer, Integer> genes) {
+    public String[][] initIndividual(int classNum, int timeSize, HashMap<String, Integer> genes) {
         String[][] individual = new String[classNum][timeSize];
         for (int i = 0; i < classNum; i++) {
             individual[i] = initChromosome(timeSize, genes);
@@ -115,7 +115,11 @@ public class GeneticAlgorithmServiceImpl implements GeneticAlgorithmService {
     }
 
     @Override
-    public int getFitness(String[][] chromosome) {
+    public int getFitness(String[][] chromosome, Set<Course> courses) {
+        HashMap<String, Integer> scoreWeight = new HashMap<>();
+        for (Course course : courses) {
+            scoreWeight.put(course.getCourseId(), course.getScore());
+        }
         int fitness = 0;
         HashMap<Integer, HashMap<String, List<Integer>>> course = new HashMap<>();
         //1. 课程越靠前加分越多
@@ -124,7 +128,7 @@ public class GeneticAlgorithmServiceImpl implements GeneticAlgorithmService {
             for (int timePart = 0; timePart < chromosome[classNum].length; timePart++) {
                 if (chromosome[classNum][timePart] != null) {
                     //计算课程时间适应度
-                    fitness += (5 - timePart % 5);
+                    fitness = fitness + (5 - timePart % 5) * scoreWeight.get(chromosome[classNum][timePart]);
 
                     //为之后的计算离散度建立集合
                     List<Integer> courseList = new ArrayList<>();
@@ -160,29 +164,25 @@ public class GeneticAlgorithmServiceImpl implements GeneticAlgorithmService {
     }
 
     @Override
-    public Set<String[][]> initPopulation(int populationSize) {
+    public Set<String[][]> initPopulation(Set<Course> courses, int populationSize, int weekSize) {
         int timeSize = 25;//从课程得到
-        Set<Course> courses = null;//从课程数据中得到
-        int weekSize = 0;//从学期数据得到
-        int classNum = 0;//从年级数据得到
+        int classNum = 4;//从年级数据得到
         Set<String[][]> population = new HashSet<>();
-        HashMap<String[][], Integer> fitnessMap = new HashMap<>();
 
-        HashMap<Integer, Integer> genes = initGene(courses, weekSize);
+        HashMap<String, Integer> genes = initGene(courses, weekSize);
         if (genes.size() > 25) {
             timeSize = 36;
         }
-        int fitnessSun = 0;
         for (int i = 0; i < populationSize; i++) {
             String[][] individual = initIndividual(classNum, timeSize, genes);
             population.add(individual);
-            int fitness = getFitness(individual);
-            fitnessSun += fitness;
-            fitnessMap.put(individual, fitness);
         }
         return population;
     }
 
+    public void evolution() {
+
+    }
 
     @Override
     public Set<List<Schedule>> selection() {

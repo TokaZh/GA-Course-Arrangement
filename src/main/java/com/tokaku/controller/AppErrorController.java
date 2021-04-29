@@ -11,7 +11,7 @@ public class AppErrorController {
 
     @RequestMapping(value = "/404", produces = {"text/html"})
     public ModelAndView errorPage404() {
-        return new ModelAndView("/404");
+        return new ModelAndView("/error/404");
     }
 
     @RequestMapping("/404")
@@ -22,7 +22,7 @@ public class AppErrorController {
 
     @RequestMapping(value = "/500", produces = {"text/html"})
     public ModelAndView errorPage500() {
-        return new ModelAndView("/blank");
+        return new ModelAndView("/error/500");
     }
 
     @RequestMapping(value = "/500")

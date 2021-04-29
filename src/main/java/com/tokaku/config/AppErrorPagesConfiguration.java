@@ -15,7 +15,7 @@ public class AppErrorPagesConfiguration {
         return new MyErrorPageRegistrar();
     }
 
-    private class MyErrorPageRegistrar implements ErrorPageRegistrar {
+    private static class MyErrorPageRegistrar implements ErrorPageRegistrar {
         @Override
         public void registerErrorPages(ErrorPageRegistry errorPageRegistry) {
             ErrorPage page404 = new ErrorPage(HttpStatus.NOT_FOUND, "/404");

@@ -33,25 +33,21 @@ public class ImportExcelController {
         this.courseService = courseService;
     }
 
+    @RequestMapping("/upload")
+    public String upload() {
+        return "upload";
+    }
 
     @RequestMapping("/importCourseExcel")
     public String withCourse(@RequestParam("file") MultipartFile file, HttpServletRequest req, HttpServletResponse resp) {
-//        List<User> list = importExcelService.importExcelWithStudent(file);
         Set<Course> list = importExcelService.importExcelWithCourse(file);
 
-//        if (list == null || list.size() == 0) {
-//            return "redirect:/course";
-//        }
-
-        //遍历看看数据
+        //遍历数据
         for (Course bean : list) {
             System.out.println(bean.toString());
+            //批量插入list到数据库
             courseService.addCourse(bean);
         }
-
-        //批量插入list到数据库
-        //待添加
-
         return "redirect:/course";
     }
 

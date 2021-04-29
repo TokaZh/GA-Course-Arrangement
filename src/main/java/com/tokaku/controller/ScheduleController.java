@@ -13,6 +13,6 @@ public class ScheduleController {
 
     @RequestMapping("/schedule")
     public String GetCurriculum() {
-        return "schedule";
+        return "schedule/table";
     }
 }
