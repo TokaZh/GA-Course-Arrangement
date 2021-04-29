@@ -26,8 +26,9 @@
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <div class="btn-group-sm" id="toolbar" role="group">
-                    <a class="btn btn-success"
-                       data-toggle="modal" data-target="#addModal">
+                    <a class="btn btn-success" onclick="modalClick('add')">
+                        <!--                       data-toggle="modal" data-target="#addModal">-->
+
                         <i class="fa fa-plus"></i> 新增
                     </a>
                     <a class="btn btn-info" href="upload">
@@ -63,12 +64,14 @@
                         <td th:text="${course.getMajorId()}"></td>
                         <td th:text="${course.getGrade()}"></td>
                         <td>
-                            <div class="btn-group-sm" id="editbar" role="group"
-                                 th:href="@{/updateCourse/} + ${course}">
-                                <a class="btn btn-success btn-xs">
+                            <div class="btn-group-sm" id="editbar" role="group">
+                                <!--                                th:href="@{/updateCourse/} + ${course}"-->
+                                <a class="btn btn-success btn-xs" onclick="modalClick('edit')"
+                                   th:onclick="modalClick([['edit/'+${course.getCourseId()}]]);"
+                                >
                                     <i class="fa fa-edit"></i>编辑</a>
                                 <a class="btn btn-danger btn-xs"
-                                   th:href="@{/deleteCourse/} + ${course.getCourseId()}">
+                                   th:href="@{/course/delete/} + ${course.getCourseId()}">
                                     <i class="fa fa-remove"></i>删除</a>
                             </div>
                         </td>
@@ -100,7 +103,7 @@
             <div class="modal-content animated bounceInRight">
                 <iframe scrolling="auto" allowtransparency="true"
                         id="childIFrame" name="iframe-add"
-                        class="" frameborder="0" src="course/add"
+                        class="" frameborder="0"
                         style="height: 641px;" width="100%">
                 </iframe>
 
@@ -141,9 +144,11 @@
 </div>
 
 <!-- 全局js -->
+
+
 <script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
 <script th:src="@{/js/bootstrap.min.js?v=3.3.7}"></script>
-
+<script th:src="@{/ruoyi/js/ry-ui.js?v=4.6.0}"></script>
 
 <script th:src="@{/js/plugins/jeditable/jquery.jeditable.js}"></script>
 
@@ -154,32 +159,48 @@
 <!-- 自定义js -->
 <script th:src="@{/js/content.js?v=1.0.0}"></script>
 
+<script th:src="@{/ruoyi/js/common.js?v=4.6.0}"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+
+<script type="text/javascript">
+    function modalClick(url) {
+        const frameSrc = "course/" + url;
+        // $("#childIFrame").attr("src", frameSrc);
+        // $('#addModal').modal({ show: true, backdrop: 'static' });
+
+        layer.open({
+            type: 2,
+            fix: false,
+            //不固定
+            area: ['500px', '650px'],
+            maxmin: true,
+            shade: 0.3,
+            title: url,
+            content: frameSrc,
+            btn: ['确定', '关闭'],
+            // 弹层外区域关闭
+            shadeClose: true,
+            yes: function (index, layero) { // 保存按钮回调函数
+                // 获取iframe层的body
+                var body = layer.getChildFrame('body', index);
+                // 找到隐藏的提交按钮模拟点击提交
+                body.find('#permissionSubmit').click();
+            },
+            cancel: function (index) {
+                return true;
+            }
+        })
+    }
+
+</script>
+
+
 <script>
 
     $(document).ready(function () {
         $('.dataTables-example').dataTable();
-
         /* Init DataTables */
         var oTable = $('#editable').dataTable();
-
-        /* Apply the jEditable handlers to the table */
-        oTable.$('td').editable('../example_ajax.php', {
-            "callback": function (sValue, y) {
-                var aPos = oTable.fnGetPosition(this);
-                oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-            },
-            "submitdata": function (value, settings) {
-                return {
-                    "row_id": this.parentNode.getAttribute('id'),
-                    "column": oTable.fnGetPosition(this)[2]
-                };
-            },
-
-            "width": "90%",
-            "height": "100%"
-        });
-
-
     });
 
     function fnClickAddRow(data) {

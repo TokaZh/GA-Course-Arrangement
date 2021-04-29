@@ -39,6 +39,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Course selectCourseByCourseId(String courseId) {
+        return courseMapper.selectCourseByCourseId(courseId);
+    }
+
+    @Override
     public boolean addCourse(Course course) {
         if (courseMapper.selectCourseByCourseId(course.getCourseId()) == null) {
             courseMapper.addCourse(course);

@@ -11,6 +11,8 @@ public interface CourseService {
 
     int deleteCourseByCourseId(int courseId);
 
+    Course selectCourseByCourseId(String courseId);
+
     List<Course> queryCourseByGradeAndMajor(int grade, int major);
 
     boolean addCourse(Course course);

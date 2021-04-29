@@ -29,7 +29,7 @@ public class CourseController {
     public String GetUserLimit(Model model) {
         Set<Course> courses = courseService.selectCourseList();
         model.addAttribute("courses", courses);
-        return "/course/list";
+        return "/course/course";
     }
 
     @GetMapping("/course/add")
@@ -37,8 +37,8 @@ public class CourseController {
         return "/course/add";
     }
 
-
-    @PostMapping("/course/addCourse")
+    //添加课程
+    @PostMapping("/course/saveCourse")
     public String addCourse(Course course, HttpServletResponse response) {
         System.out.println(course);
         if (courseService.addCourse(course))
@@ -57,16 +57,19 @@ public class CourseController {
         }
     }
 
-    @GetMapping("/deleteCourse/{courseId}")
+    //删除课程
+    @GetMapping("/course/delete/{courseId}")
     public String deleteCourse(@PathVariable("courseId") int courseId) {
         courseService.deleteCourseByCourseId(courseId);
         return "redirect:/course";
     }
 
-    @GetMapping("/updateCourse/{course}")
-    public String updateCourse(@PathVariable("course") Course course, Model model) {
-//        courseService.updateCourse(course);
-        model.addAttribute("stu", course);
+    //编辑课程
+    @GetMapping("/course/edit/{courseId}")
+    public String updateCourse(@PathVariable("courseId") String courseId, Model model) {
+        Course course = courseService.selectCourseByCourseId(courseId);
+        model.addAttribute("course", course);
+        System.out.println(course);
         return "/course/edit";
     }
 
