@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class Grade {
-    private int gradeId;
-    private int majorId;
+    private String gradeId;
+    private String majorId;
+    private int grade;
     private int classNum;
 }

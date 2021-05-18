@@ -1,10 +1,9 @@
 package com.tokaku.service;
 
 import com.tokaku.pojo.Course;
-import com.tokaku.pojo.Schedule;
+import com.tokaku.pojo.Individual;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 public interface GeneticAlgorithmService {
@@ -13,21 +12,27 @@ public interface GeneticAlgorithmService {
 
     String[] initChromosome(int timeSize, HashMap<String, Integer> genes);
 
-    String[][] initIndividual(int classNum, int timeSize, HashMap<String, Integer> genes);
+    Individual initIndividual(int classNum, int timeSize, HashMap<String, Integer> genes, HashMap<String, Integer> scoreWeight);
 
-    HashMap<Integer, Set<Integer>> checkConflict(int classNum, int timeSize, String[][] individual);
+    HashMap<Integer, Set<Integer>> checkConflict(String[][] individual);
 
     String[][] dealConflict(String[][] individual, HashMap<Integer, Set<Integer>> signMap);
 
     //weeksize从学期数据得到
-    Set<String[][]> initPopulation(Set<Course> courses, int populationSize, int weekSize);
+    Set<Individual> initPopulation(Set<Course> courses, int weekSize, int populationSize);
 
-    int getFitness(String[][] chromosome, Set<Course> courses);
+    HashMap<String, Integer> getScoreWeight(Set<Course> courses);
+
+    int getFitness(String[][] chromosome, HashMap<String, Integer> scoreWeight);
+
+
+    Set<Individual> evolution(Set<Individual> population);
+
 
     //选择(selection)；交叉(crossover)；变异(mutation)
-    Set<List<Schedule>> selection();
+    String[][] selection(String[][] individual);
 
-    Set<List<Schedule>> crossover();
+    String[][] crossover(String[][] individual);
 
-    Set<List<Schedule>> mutation();
+    String[][] mutation(String[][] individual);
 }

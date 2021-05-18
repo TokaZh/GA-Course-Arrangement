@@ -1,7 +1,7 @@
 package com.tokaku.service.impl;
 
 import com.tokaku.pojo.Course;
-import com.tokaku.pojo.Schedule;
+import com.tokaku.pojo.Individual;
 import com.tokaku.service.GeneticAlgorithmService;
 import org.springframework.stereotype.Service;
 
@@ -43,24 +43,26 @@ public class GeneticAlgorithmServiceImpl implements GeneticAlgorithmService {
     }
 
     @Override
-    public String[][] initIndividual(int classNum, int timeSize, HashMap<String, Integer> genes) {
-        String[][] individual = new String[classNum][timeSize];
+    public Individual initIndividual(int classNum, int timeSize, HashMap<String, Integer> genes, HashMap<String, Integer> scoreWeight) {
+
+        String[][] conflictSchedule = new String[classNum][timeSize];
         for (int i = 0; i < classNum; i++) {
-            individual[i] = initChromosome(timeSize, genes);
+            conflictSchedule[i] = initChromosome(timeSize, genes);
         }
         //解决冲突
-//        遍历时间节点,找出冲突点
-        HashMap<Integer, Set<Integer>> signSet = checkConflict(classNum, timeSize, individual);
-//        遍历冲突点，进行交换，解决冲突，直到无冲突
-        //dealConflict
+        //遍历时间节点,找出冲突点
+        HashMap<Integer, Set<Integer>> signSet = checkConflict(conflictSchedule);
+        //遍历冲突点，进行交换，解决冲突，直到无冲突
+        String[][] schedule = dealConflict(conflictSchedule, signSet);
 
-
-        return dealConflict(individual, signSet);
+        return new Individual(schedule, getFitness(schedule, scoreWeight));
     }
 
     //应当返回班级,冲突
     @Override
-    public HashMap<Integer, Set<Integer>> checkConflict(int classNum, int timeSize, String[][] individual) {
+    public HashMap<Integer, Set<Integer>> checkConflict(String[][] individual) {
+        int classNum = individual.length;
+        int timeSize = individual[0].length;
         HashMap<Integer, Set<Integer>> signMap = new HashMap<>();
         boolean[][] sign = new boolean[classNum][timeSize];
         //按时间遍历 目的为查看某一时间片的重复课程
@@ -115,28 +117,25 @@ public class GeneticAlgorithmServiceImpl implements GeneticAlgorithmService {
     }
 
     @Override
-    public int getFitness(String[][] chromosome, Set<Course> courses) {
-        HashMap<String, Integer> scoreWeight = new HashMap<>();
-        for (Course course : courses) {
-            scoreWeight.put(course.getCourseId(), course.getScore());
-        }
+    public int getFitness(String[][] individual, HashMap<String, Integer> scoreWeight) {
+
         int fitness = 0;
         HashMap<Integer, HashMap<String, List<Integer>>> course = new HashMap<>();
         //1. 课程越靠前加分越多
-        for (int classNum = 0; classNum < chromosome.length; classNum++) {
+        for (int classNum = 0; classNum < individual.length; classNum++) {
             HashMap<String, List<Integer>> classMap = new HashMap<>();
-            for (int timePart = 0; timePart < chromosome[classNum].length; timePart++) {
-                if (chromosome[classNum][timePart] != null) {
+            for (int timePart = 0; timePart < individual[classNum].length; timePart++) {
+                if (individual[classNum][timePart] != null) {
                     //计算课程时间适应度
-                    fitness = fitness + (5 - timePart % 5) * scoreWeight.get(chromosome[classNum][timePart]);
+                    fitness = fitness + (5 - timePart % 5) * scoreWeight.get(individual[classNum][timePart]);
 
                     //为之后的计算离散度建立集合
                     List<Integer> courseList = new ArrayList<>();
-                    if (classMap.containsKey(chromosome[classNum][timePart])) {
-                        courseList = classMap.get(chromosome[classNum][timePart]);
+                    if (classMap.containsKey(individual[classNum][timePart])) {
+                        courseList = classMap.get(individual[classNum][timePart]);
                     }
                     courseList.add(timePart);
-                    classMap.put(chromosome[classNum][timePart], courseList);
+                    classMap.put(individual[classNum][timePart], courseList);
                 }
             }
             course.put(classNum, classMap);
@@ -164,38 +163,88 @@ public class GeneticAlgorithmServiceImpl implements GeneticAlgorithmService {
     }
 
     @Override
-    public Set<String[][]> initPopulation(Set<Course> courses, int populationSize, int weekSize) {
+    public HashMap<String, Integer> getScoreWeight(Set<Course> courses) {
+        HashMap<String, Integer> scoreWeight = new HashMap<>();
+        for (Course course : courses) {
+            scoreWeight.put(course.getCourseId(), course.getScore());
+        }
+        return scoreWeight;
+    }
+
+    //生成种群并计算适应度
+    @Override
+    public Set<Individual> initPopulation(Set<Course> courses, int weekSize, int populationSize) {
         int timeSize = 25;//从课程得到
         int classNum = 4;//从年级数据得到
-        Set<String[][]> population = new HashSet<>();
+        Set<Individual> population = new HashSet<>();
 
+        HashMap<String, Integer> scoreWeight = getScoreWeight(courses);
         HashMap<String, Integer> genes = initGene(courses, weekSize);
-        if (genes.size() > 25) {
-            timeSize = 36;
-        }
+
+        if (genes.size() > 25) timeSize = 36;
+
         for (int i = 0; i < populationSize; i++) {
-            String[][] individual = initIndividual(classNum, timeSize, genes);
+            Individual individual = initIndividual(classNum, timeSize, genes, scoreWeight);
             population.add(individual);
         }
+
         return population;
     }
 
-    public void evolution() {
+    private static final int DAISHU = 300;
 
+    //进化
+    @Override
+    public Set<Individual> evolution(Set<Individual> population) {
+        Set<Individual> childPopulation = new HashSet<>();
+        float sumFitness = 0;
+        for (Individual individual : population) {
+            sumFitness += individual.getFitness();
+        }
+        float averageFitness = sumFitness / population.size();
+        for (Individual individual : population) {
+            int fitness = individual.getFitness();
+
+            //适应度高直接保留到下一代
+            if (fitness > averageFitness) {
+                childPopulation.add(individual);
+                continue;
+            } else {//适应度低进行进化
+                float persent = fitness / sumFitness;
+                String[][] schedule = individual.getSchedule();
+
+
+            }
+
+
+            //生成随机数 对应概率
+
+        }
+
+        return childPopulation;
     }
 
+    //敷衍  基于n次进化
+
+
     @Override
-    public Set<List<Schedule>> selection() {
+    public String[][] selection(String[][] individual) {
         return null;
     }
 
+    //交叉  按概率交叉 9
     @Override
-    public Set<List<Schedule>> crossover() {
-        return null;
+    public String[][] crossover(String[][] individual) {
+
+
+        return dealConflict(individual, checkConflict(individual));
     }
 
+    //变异 按概率变异
     @Override
-    public Set<List<Schedule>> mutation() {
-        return null;
+    public String[][] mutation(String[][] individual) {
+
+
+        return dealConflict(individual, checkConflict(individual));
     }
 }

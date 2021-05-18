@@ -19,7 +19,7 @@ public class TeacherController {
     public String GetUserLimit(Model model) {
         List<Teacher> teachers = teacherService.selectTeacherList();
         model.addAttribute("teachers", teachers);
-        return "teacher";
+        return "/teacher/teacher";
     }
 
 //    @PostMapping("/stu")

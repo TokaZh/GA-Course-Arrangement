@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>Table</title>
+    <title>课表查看</title>
 
     <link rel="shortcut icon" href="favicon.ico">
     <link href="css/bootstrap.min.css?v=3.3.7" rel="stylesheet">
@@ -24,7 +24,7 @@
     <!-- Panel Other -->
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>其他</h5>
+            <h5>课程表</h5>
         </div>
         <div class="ibox-content">
             <div class="row row-lg">
@@ -33,32 +33,26 @@
                     <div class="example-wrap">
                         <!--                            <h4 class="example-title">事件</h4>-->
                         <div class="example">
-                            <!--                                <div class="alert alert-success" id="examplebtTableEventsResult" role="alert">-->
-                            <!--                                    事件结果-->
-                            <!--                                </div>-->
-                            <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
-                                <button type="button" class="btn btn-outline btn-default">
-                                    <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline btn-default">
-                                    <i class="glyphicon glyphicon-heart" aria-hidden="true"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline btn-default">
-                                    <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <table id="exampleTableEvents" data-height="500" data-mobile-responsive="true">
+                            <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th data-field="state" data-checkbox="true"></th>
-                                    <th data-field="id">ID</th>
-                                    <th data-field="name">名称</th>
-                                    <th data-field="price">价格</th>
-                                    <th data-field="price">价格</th>
-                                    <th data-field="price">价格</th>
-                                    <th data-field="price">价格</th>
+                                    <th></th>
+                                    <th>星期一</th>
+                                    <th>星期二</th>
+                                    <th>星期三</th>
+                                    <th>星期四</th>
+                                    <th>星期五</th>
                                 </tr>
                                 </thead>
+                                <tbody>
+                                <tr th:each="i:${#numbers.sequence(0,4)}">
+                                    <td class="font-bold gray-bg"
+                                        th:text="${head[i]}"></td>
+                                    <td th:each="j:${#numbers.sequence(0,4)}"
+                                        th:text="${schedule[i+j*5]}">
+                                    </td>
+                                </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>

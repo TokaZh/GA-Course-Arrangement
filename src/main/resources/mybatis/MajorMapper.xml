@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tokaku.mapper.MajorMapper">
+
+    <resultMap id="MajorMap" type="Major">
+        <id property="majorId" column="major_id"/>
+        <result property="majorName" column="major_name"/>
+    </resultMap>
+
+    <select id="selectMajorList" resultMap="MajorMap">
+        select *
+        from major
+    </select>
+
+    <select id="selectMajorNameByMajorId" parameterType="String" resultType="String">
+        select major_name
+        from major
+        where major_id = ${majorId}
+    </select>
+
+    <!--    <select id="queryCourseByGradeAndMajor" parameterType="int" resultMap="CourseMap">-->
+    <!--        select *-->
+    <!--        from course-->
+    <!--        where major_id = ${major}-->
+    <!--          and grade = ${grade}-->
+    <!--    </select>-->
+
+    <!--    <insert id="addCourse" parameterType="Course">-->
+    <!--        insert into course(course_id, course_name, type, score, time, major_id, grade)-->
+    <!--        values (#{courseId}, #{courseName}, #{type}, #{score}, #{time}, #{majorId}, #{grade})-->
+    <!--    </insert>-->
+
+    <!--    <delete id="deleteCourseByCourseId" parameterType="int">-->
+    <!--        delete-->
+    <!--        from course-->
+    <!--        where course_id = #{courseId}-->
+    <!--    </delete>-->
+
+    <!--    <update id="updateCourse" parameterType="Course">-->
+    <!--        update course-->
+    <!--        <set>-->
+    <!--            <if test="courseName">-->
+    <!--                course_name = #{courseName},-->
+    <!--            </if>-->
+    <!--            <if test="type">-->
+    <!--                type = #{type},-->
+    <!--            </if>-->
+    <!--            <if test="score">-->
+    <!--                score = #{score},-->
+    <!--            </if>-->
+    <!--            <if test="time">-->
+    <!--                time = #{time},-->
+    <!--            </if>-->
+    <!--            <if test="majorId">-->
+    <!--                major_id = #{majorId},-->
+    <!--            </if>-->
+    <!--            <if test="grade">-->
+    <!--                grade = #{grade},-->
+    <!--            </if>-->
+    <!--        </set>-->
+    <!--        where course_id = #{CourseId}-->
+    <!--    </update>-->
+
+</mapper>

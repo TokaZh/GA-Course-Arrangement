@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>教师管理</title>
+
+    <link rel="shortcut icon" th:href="@{/favicon.ico}">
+    <link th:href="@{/css/bootstrap.min.css?v=3.3.7}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link th:href="@{/css/plugins/dataTables/dataTables.bootstrap.css}" rel="stylesheet">
+
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css?v=4.1.0}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <div class="btn-group-sm" id="toolbar" role="group">
+                    <a class="btn btn-success" onclick="modalClick('add')">
+                        <i class="fa fa-plus"></i> 新增
+                    </a>
+                    <a class="btn btn-info" href="upload">
+                        <i class="fa fa-upload"></i> 导入
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <table class="table table-striped table-bordered table-hover dataTables-example"
+                       id="editable">
+                    <thead>
+                    <tr>
+                        <th>工号</th>
+                        <th>名字</th>
+                        <th>联系电话</th>
+                        <th>所任课程</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="teacher:${teachers}">
+                        <td th:text="${teacher.getTeacherId()}"></td>
+                        <td th:text="${teacher.getTeacherName()}"></td>
+                        <td th:text="${teacher.getTelephone()}"></td>
+                        <td th:text="${teacher.getCourseId()}"></td>
+                        <td>
+                            <div class="btn-group-sm" id="editbar" role="group">
+                                <a class="btn btn-success btn-xs" onclick="modalClick('edit')"
+                                   th:onclick="modalClick([['edit/'+${teacher.getTeacherId()}]]);"
+                                >
+                                    <i class="fa fa-edit"></i>编辑</a>
+                                <a class="btn btn-danger btn-xs"
+                                   th:href="@{/teacher/delete/} + ${teacher.getTeacherId()}">
+                                    <i class="fa fa-remove"></i>删除</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>工号</th>
+                        <th>名字</th>
+                        <th>联系电话</th>
+                        <th>所任课程</th>
+                        <th>操作</th>
+                    </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="post" class="form-horizontal m-t" id="signupForm" action="/course/addCourse">
+
+            <div class="modal-content animated bounceInRight">
+                <iframe scrolling="auto" allowtransparency="true"
+                        id="childIFrame" name="iframe-add"
+                        class="" frameborder="0"
+                        style="height: 641px;" width="100%">
+                </iframe>
+
+                <div th:class="modal-footer">
+                    <div class="layui-layer-btn layui-layer-btn-">
+                        <button class="btn btn-primary layui-layer-btn0" onclick="getValue()" type="">确定</button>
+                        <a class="btn btn-default layui-layer-btn1" data-dismiss="modal">关闭</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form method="post" action="importCourseExcel" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Excel批量添加</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <a onclick="$.table.importTemplate()" class="btn btn-default btn-xs">
+                        <i class="fa fa-file-excel"></i> 下载模板
+                    </a>
+                    <input type="file" name="file">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary pull-right">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 全局js -->
+
+
+<script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+<script th:src="@{/js/bootstrap.min.js?v=3.3.7}"></script>
+<script th:src="@{/ruoyi/js/ry-ui.js?v=4.6.0}"></script>
+
+<script th:src="@{/js/plugins/jeditable/jquery.jeditable.js}"></script>
+
+<!-- Data Tables -->
+<script th:src="@{/js/plugins/dataTables/jquery.dataTables.js}"></script>
+<script th:src="@{/js/plugins/dataTables/dataTables.bootstrap.js}"></script>
+
+<!-- 自定义js -->
+<script th:src="@{/js/content.js?v=1.0.0}"></script>
+
+<script th:src="@{/ruoyi/js/common.js?v=4.6.0}"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+
+<script type="text/javascript">
+    function modalClick(url) {
+        const frameSrc = "course/" + url;
+        // $("#childIFrame").attr("src", frameSrc);
+        // $('#addModal').modal({ show: true, backdrop: 'static' });
+
+        layer.open({
+            type: 2,
+            fix: false,
+            //不固定
+            area: ['500px', '650px'],
+            maxmin: true,
+            shade: 0.3,
+            title: url,
+            content: frameSrc,
+            btn: ['确定', '关闭'],
+            // 弹层外区域关闭
+            shadeClose: true,
+            yes: function (index, layero) { // 保存按钮回调函数
+                // 获取iframe层的body
+                var body = layer.getChildFrame('body', index);
+                // 找到隐藏的提交按钮模拟点击提交
+                body.find('#permissionSubmit').click();
+            },
+            cancel: function (index) {
+                return true;
+            }
+        })
+    }
+
+</script>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('.dataTables-example').dataTable();
+        /* Init DataTables */
+        var oTable = $('#editable').dataTable();
+    });
+
+    function fnClickAddRow(data) {
+        $('#editable').dataTable().fnAddData([
+            "课程号",
+            "课程名",
+            "类型",
+            "学分",
+            "学时",
+            "专业",
+            "学期",
+            "操作"]);
+
+    }
+</script>
+
+</body>
+
+</html>

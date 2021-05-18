@@ -11,7 +11,7 @@
         <result property="time" column="time"/>
         <result property="type" column="type"/>
         <result property="majorId" column="major_id"/>
-        <result property="grade" column="grade"/>
+        <result property="term" column="term"/>
     </resultMap>
 
     <select id="selectCourseList" resultMap="CourseMap">
@@ -25,19 +25,26 @@
         where course_id = ${courseId}
     </select>
 
-    <select id="queryCourseByGradeAndMajor" parameterType="int" resultMap="CourseMap">
+    <select id="selectCourse" parameterType="Course" resultMap="CourseMap">
         select *
         from course
-        where major_id = ${major}
-          and grade = ${grade}
+        where course_name = '${courseName}'
+          and major_id = '${majorId}'
     </select>
 
-    <insert id="addCourse" parameterType="Course">
-        insert into course(course_id, course_name, type, score, time, major_id, grade)
-        values (#{courseId}, #{courseName}, #{type}, #{score}, #{time}, #{majorId}, #{grade})
+    <select id="selectCourseByGrade" parameterType="String" resultMap="CourseMap">
+        select *
+        from course
+        where major_id = ${majorId}
+          and term = ${term}
+    </select>
+
+    <insert id="addCourse" parameterType="Course" useGeneratedKeys="true" keyProperty="courseId" keyColumn="course_id">
+        insert into course(course_name, type, score, time, major_id, term)
+        values (#{courseName}, #{type}, #{score}, #{time}, #{majorId}, #{term})
     </insert>
 
-    <delete id="deleteCourseByCourseId" parameterType="int">
+    <delete id="deleteCourseByCourseId" parameterType="String">
         delete
         from course
         where course_id = #{courseId}
@@ -61,11 +68,11 @@
             <if test="majorId">
                 major_id = #{majorId},
             </if>
-            <if test="grade">
-                grade = #{grade},
+            <if test="term">
+                term = #{term},
             </if>
         </set>
-        where course_id = #{CourseId}
+        where course_id = #{courseId}
     </update>
 
 </mapper>

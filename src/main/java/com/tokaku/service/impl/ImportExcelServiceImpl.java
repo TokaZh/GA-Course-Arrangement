@@ -85,12 +85,12 @@ public class ImportExcelServiceImpl implements ImportExcelService {
             return null;
         }
         colNum = 0;
-        int courseId = Integer.parseInt(getCellValue(sheet, row, colNum++));
+        String courseId = String.valueOf(getCellValue(sheet, row, colNum++));
         String courseName = getCellValue(sheet, row, colNum++);
         int type = Integer.parseInt(getCellValue(sheet, row, colNum++));
         int courseScore = Integer.parseInt(getCellValue(sheet, row, colNum++));
         int time = Integer.parseInt(getCellValue(sheet, row, colNum++));
-        int majorId = Integer.parseInt(getCellValue(sheet, row, colNum));
+        String majorId = String.valueOf(getCellValue(sheet, row, colNum));
         int grade = Integer.parseInt(getCellValue(sheet, row, colNum));
         return new Course(courseId, courseName, type, courseScore, time, majorId, grade);
 

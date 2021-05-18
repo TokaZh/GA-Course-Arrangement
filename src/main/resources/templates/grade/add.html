@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>新增年级信息</title>
+
+    <link rel="shortcut icon" th:href="@{/favicon.ico}">
+
+    <link th:href="@{/css/bootstrap.min.css?v=3.3.7}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css?v=4.1.0}" rel="stylesheet"/>
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="col-sm-6 register">
+        <form method="post" class="form-horizontal m-t" id="signupForm" action="/grade/saveGrade">
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="majorId">专业</label>
+                <div class="col-sm-8">
+                    <select id="majorId" name="majorId" th:class="form-control" required>
+                        <option
+                                th:each="major:${majorSet}"
+                                th:value="${major.getMajorId()}"
+                                th:text="${major.getMajorName()}"
+                        >
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="type">年级</label>
+                <div class="col-sm-8">
+                    <select id="type" name="type" th:class="form-control" required>
+                        <option value="0" selected>2016</option>
+                        <option value="1">2017</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="classNum">班级数</label>
+                <div class="col-sm-8">
+                    <select id="classNum" name="classNum" th:class="form-control" required>
+                        <option value="" selected>请选择班级数</option>
+                        <option
+                                th:each="classNum : ${#numbers.sequence(1,8)}"
+                                th:value="${classNum}"
+                                th:text="${classNum}"
+                        ></option>
+                    </select>
+                </div>
+            </div>
+
+            <!--隐藏,使用父窗口调用-->
+            <div class="layui-form-item" hidden>
+                <div class="layui-input-block">
+                    <button id="permissionSubmit" class="layui-btn" lay-submit lay-filter="*">
+                        保存
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+<script th:src="@{/js/bootstrap.min.js?v=3.3.7}"></script>
+
+<!-- jQuery Validation plugin javascript-->
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+
+<script th:src="@{/js/demo/form-validate-demo.js}"></script>
+
+</body>
+
+</html>

@@ -10,6 +10,7 @@
         <result property="teacherId" column="teacher_id"/>
         <result property="classId" column="class_id"/>
         <result property="timePart" column="time_part"/>
+        <result property="classRoomId" column="classroom_id"/>
     </resultMap>
 
 

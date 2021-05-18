@@ -2,11 +2,10 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>数据表格</title>
+    <title>课程管理</title>
 
     <link rel="shortcut icon" th:href="@{/favicon.ico}">
     <link th:href="@{/css/bootstrap.min.css?v=3.3.7}" rel="stylesheet">
@@ -18,6 +17,9 @@
     <link th:href="@{/css/animate.css}" rel="stylesheet">
     <link th:href="@{/css/style.css?v=4.1.0}" rel="stylesheet">
 
+    <!-- Sweet Alert -->
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+
 </head>
 
 <body class="gray-bg">
@@ -26,9 +28,10 @@
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <div class="btn-group-sm" id="toolbar" role="group">
-                    <a class="btn btn-success" onclick="modalClick('add')">
-                        <!--                       data-toggle="modal" data-target="#addModal">-->
-
+                    <!--                    <a class="btn btn-success" onclick="modalClick('add')">-->
+                    <!--                        <i class="fa fa-plus"></i> 新增-->
+                    <!--                    </a>-->
+                    <a class="btn btn-success" data-toggle="modal" data-target="#add">
                         <i class="fa fa-plus"></i> 新增
                     </a>
                     <a class="btn btn-info" href="upload">
@@ -61,13 +64,17 @@
                         <td th:text="${course.getType()==0?'理论课':'实践课'}"></td>
                         <td th:text="${course.getScore()}"></td>
                         <td th:text="${course.getTime()}"></td>
-                        <td th:text="${course.getMajorId()}"></td>
-                        <td th:text="${course.getGrade()}"></td>
+                        <td th:text="${majorMap.get(course.getMajorId())}"></td>
+                        <td th:text="${course.getTerm()}"></td>
                         <td>
                             <div class="btn-group-sm" id="editbar" role="group">
                                 <!--                                th:href="@{/updateCourse/} + ${course}"-->
-                                <a class="btn btn-success btn-xs" onclick="modalClick('edit')"
-                                   th:onclick="modalClick([['edit/'+${course.getCourseId()}]]);"
+                                <!--                                <a class="btn btn-success btn-xs" onclick="modalClick('edit')"-->
+                                <!--                                   th:onclick="modalClick([['edit/'+${course.getCourseId()}]]);"-->
+                                <!--                                >-->
+                                <!--                                    <i class="fa fa-edit"></i>编辑</a>-->
+                                <a class="btn btn-success btn-xs"
+                                   th:href="@{'course/edit/'+${course.getCourseId()}}"
                                 >
                                     <i class="fa fa-edit"></i>编辑</a>
                                 <a class="btn btn-danger btn-xs"
@@ -102,7 +109,7 @@
 
             <div class="modal-content animated bounceInRight">
                 <iframe scrolling="auto" allowtransparency="true"
-                        id="childIFrame" name="iframe-add"
+                        id="childIFrame" name="childIFrame"
                         class="" frameborder="0"
                         style="height: 641px;" width="100%">
                 </iframe>
@@ -142,6 +149,190 @@
         </form>
     </div>
 </div>
+<div class="modal inmodal" id="add" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="post" class="form-horizontal m-t" action="/course/saveCourse">
+
+            <div class="modal-content animated fadeIn">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">Close</span></button>
+                    <h4 class="modal-title">添加课程</h4>
+                </div>
+                <div class="modal-body" style="height:400px">
+                    <div class="wrapper wrapper-content animated fadeInRight">
+                        <div class="register col-sm-11">
+                            <form method="post" class="form-horizontal m-t" action="/course/saveCourse">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="courseName">课名：</label>
+                                    <div class="col-sm-8">
+                                        <input id="courseName" name="courseName" class="form-control" type="text"
+                                               required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="type">类型：</label>
+                                    <div class="col-sm-8">
+                                        <!--                    <input id="type" name="type" class="form-control" type="text" required>-->
+                                        <select id="type" name="type" th:class="form-control" required>
+                                            <option value="" selected>请选择课程类型</option>
+                                            <option value="0">理论课</option>
+                                            <option value="1">实验课</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="score">学分：</label>
+                                    <div class="col-sm-8">
+                                        <select id="score" name="score" th:class="form-control" required>
+                                            <option value="" selected>请选择学分</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="time">学时：</label>
+                                    <div class="col-sm-8">
+                                        <input id="time" name="time" class="form-control" type="text" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="majorId">专业：</label>
+                                    <div class="col-sm-8">
+                                        <select id="majorId" name="majorId" th:class="form-control" required>
+                                            <option value="" selected>请选择专业</option>
+                                            <option
+                                                    th:each="major:${majorSet}"
+                                                    th:value="${major.getMajorId()}"
+                                                    th:text="${major.getMajorName()}"
+                                            >
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="term">学期：</label>
+                                    <div class="col-sm-8">
+                                        <select th:class="form-control" name="term" id="term" required>
+                                            <option value="" selected>请选择学期</option>
+                                            <option th:each="grade : ${#numbers.sequence(1,8)}"
+                                                    th:value="${grade}"
+                                                    th:text="${grade}"
+                                            ></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="layui-input-block">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary pull-right">提交</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal inmodal" id="edit" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="post" class="form-horizontal m-t" action="/course/saveCourse">
+
+            <div class="modal-content animated fadeIn">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">Close</span></button>
+                    <h4 class="modal-title">添加课程</h4>
+                </div>
+                <div class="modal-body" style="height:400px">
+                    <div class="wrapper wrapper-content animated fadeInRight">
+                        <div class="register col-sm-11">
+                            <form method="post" class="form-horizontal m-t" action="/course/saveCourse">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="courseName">课名：</label>
+                                    <div class="col-sm-8">
+                                        <input id="courseName" name="courseName" class="form-control" type="text"
+                                               required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="type">类型：</label>
+                                    <div class="col-sm-8">
+                                        <!--                    <input id="type" name="type" class="form-control" type="text" required>-->
+                                        <select id="type" name="type" th:class="form-control" required>
+                                            <option value="" selected>请选择课程类型</option>
+                                            <option value="0">理论课</option>
+                                            <option value="1">实验课</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="score">学分：</label>
+                                    <div class="col-sm-8">
+                                        <select id="score" name="score" th:class="form-control" required>
+                                            <option value="" selected>请选择学分</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="time">学时：</label>
+                                    <div class="col-sm-8">
+                                        <input id="time" name="time" class="form-control" type="text" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="majorId">专业：</label>
+                                    <div class="col-sm-8">
+                                        <select id="majorId" name="majorId" th:class="form-control" required>
+                                            <option value="" selected>请选择专业</option>
+                                            <option
+                                                    th:each="major:${majorSet}"
+                                                    th:value="${major.getMajorId()}"
+                                                    th:text="${major.getMajorName()}"
+                                            >
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="term">学期：</label>
+                                    <div class="col-sm-8">
+                                        <select th:class="form-control" name="term" id="term" required>
+                                            <option value="" selected>请选择学期</option>
+                                            <option th:each="grade : ${#numbers.sequence(1,8)}"
+                                                    th:value="${grade}"
+                                                    th:text="${grade}"
+                                            ></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="layui-input-block">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary pull-right">提交</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
 
 <!-- 全局js -->
 
@@ -161,12 +352,13 @@
 
 <script th:src="@{/ruoyi/js/common.js?v=4.6.0}"></script>
 <script src="/js/plugins/layer/layer.min.js"></script>
+<!-- Sweet alert -->
+<script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 
 <script type="text/javascript">
+
     function modalClick(url) {
         const frameSrc = "course/" + url;
-        // $("#childIFrame").attr("src", frameSrc);
-        // $('#addModal').modal({ show: true, backdrop: 'static' });
 
         layer.open({
             type: 2,
@@ -180,18 +372,23 @@
             btn: ['确定', '关闭'],
             // 弹层外区域关闭
             shadeClose: true,
-            yes: function (index, layero) { // 保存按钮回调函数
-                // 获取iframe层的body
+            yes: function (index, layero) {
+                var arr = $(layero).find("iframe")[0].contentWindow.callbackdata();
+
                 var body = layer.getChildFrame('body', index);
-                // 找到隐藏的提交按钮模拟点击提交
+                // // 找到隐藏的提交按钮模拟点击提交
                 body.find('#permissionSubmit').click();
+                //查到目标页面的内容赋给当前页面元素
+                // setTimeout(function(){layer.close(index)},100);//这块是点击确定关闭这个弹出层
+                window.location.reload();
+
             },
+
             cancel: function (index) {
                 return true;
             }
         })
     }
-
 </script>
 
 
@@ -205,7 +402,7 @@
 
     function fnClickAddRow(data) {
         $('#editable').dataTable().fnAddData([
-            "课程号",
+            "data",
             "课程名",
             "类型",
             "学分",
@@ -215,6 +412,7 @@
             "操作"]);
 
     }
+
 </script>
 
 </body>
