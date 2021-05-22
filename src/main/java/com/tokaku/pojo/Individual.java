@@ -7,7 +7,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Individual {
+public class Individual implements Comparable<Individual> {
     String[][] schedule;
-    int fitness;
+    double fitness;
+
+    @Override
+    public int compareTo(Individual individual) {
+        if (this.getFitness() > individual.getFitness())
+            return -1;
+        else
+            return 1;
+    }
 }

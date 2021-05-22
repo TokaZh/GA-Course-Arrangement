@@ -4,7 +4,10 @@ import java.util.Random;
 
 public class RandomUtil {
     public static int initTimePart(int timeSize) {
-        Random random = new Random();
-        return random.nextInt(timeSize);
+        return new Random().nextInt(timeSize);
+    }
+
+    public static float initProbability() {
+        return new Random().nextFloat();
     }
 }

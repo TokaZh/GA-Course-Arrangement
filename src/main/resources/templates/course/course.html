@@ -54,6 +54,7 @@
                         <th>学时</th>
                         <th>专业</th>
                         <th>学期</th>
+                        <th>科任老师</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -66,6 +67,7 @@
                         <td th:text="${course.getTime()}"></td>
                         <td th:text="${majorMap.get(course.getMajorId())}"></td>
                         <td th:text="${course.getTerm()}"></td>
+                        <!--                        <td th:text="${course}"></td>-->
                         <td>
                             <div class="btn-group-sm" id="editbar" role="group">
                                 <!--                                th:href="@{/updateCourse/} + ${course}"-->

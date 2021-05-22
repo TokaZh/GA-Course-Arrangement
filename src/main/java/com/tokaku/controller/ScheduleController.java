@@ -50,12 +50,11 @@ public class ScheduleController {
     public String GetCurriculum(Model model) {
         //搜索对应课程表 参数：专业MajorId，年级Grade
         String majorId = "1";
-        String term = "1";
-        Set<Course> courses = courseService.selectCourseByGrade(majorId, term);
+        int term = 1;
+        Set<Course> courses = courseService.selectCourseByTerm(majorId, term);
 ////        2.排课
         HashMap<String, Integer> gene = geneticAlgorithmService.initGene(courses, 25);
-        HashMap<String, Integer> scoreWeight = geneticAlgorithmService.getScoreWeight(courses);
-        Individual individual = geneticAlgorithmService.initIndividual(4, 25, gene, scoreWeight);
+        Individual individual = geneticAlgorithmService.initIndividual(4, 25, gene);
         String[][] schedule = individual.getSchedule();
 
         model.addAttribute("schedule", schedule[0]);

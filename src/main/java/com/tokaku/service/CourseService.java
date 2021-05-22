@@ -16,7 +16,7 @@ public interface CourseService {
 
     int updateCourse(Course course);
 
-    Set<Course> selectCourseByGrade(String majorId, String term);
+    Set<Course> selectCourseByTerm(String majorId, int term);
 
 //    int querySize();
 //

@@ -1,5 +1,9 @@
 package com.tokaku.service;
 
-public interface AutoCoreService {
+import com.tokaku.pojo.Course;
 
+import java.util.Set;
+
+public interface AutoCoreService {
+    String[][] AutoArrangementCourse(Set<Course> courses, int classNum);
 }

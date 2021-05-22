@@ -32,7 +32,7 @@
           and major_id = '${majorId}'
     </select>
 
-    <select id="selectCourseByGrade" parameterType="String" resultMap="CourseMap">
+    <select id="selectCourseByTerm" parameterType="String" resultMap="CourseMap">
         select *
         from course
         where major_id = ${majorId}

@@ -22,5 +22,5 @@ public interface CourseMapper {
 
     Course selectCourse(Course course);
 
-    Set<Course> selectCourseByGrade(String majorId, String term);
+    Set<Course> selectCourseByTerm(String majorId, int term);
 }

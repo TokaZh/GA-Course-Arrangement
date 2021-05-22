@@ -12,27 +12,23 @@ public interface GeneticAlgorithmService {
 
     String[] initChromosome(int timeSize, HashMap<String, Integer> genes);
 
-    Individual initIndividual(int classNum, int timeSize, HashMap<String, Integer> genes, HashMap<String, Integer> scoreWeight);
+    Individual initIndividual(int classNum, int timeSize, HashMap<String, Integer> genes);
 
     HashMap<Integer, Set<Integer>> checkConflict(String[][] individual);
 
     String[][] dealConflict(String[][] individual, HashMap<Integer, Set<Integer>> signMap);
 
     //weeksize从学期数据得到
-    Set<Individual> initPopulation(Set<Course> courses, int weekSize, int populationSize);
+    Set<Individual> initPopulation(Set<Course> courses, int classNum, int populationSize);
 
-    HashMap<String, Integer> getScoreWeight(Set<Course> courses);
-
-    int getFitness(String[][] chromosome, HashMap<String, Integer> scoreWeight);
-
+    double getFitness(String[][] chromosome);
 
     Set<Individual> evolution(Set<Individual> population);
 
-
     //选择(selection)；交叉(crossover)；变异(mutation)
-    String[][] selection(String[][] individual);
+    Set<Individual> selection(Set<Individual> population);
 
-    String[][] crossover(String[][] individual);
+    Set<Individual> crossover(Set<Individual> population);
 
-    String[][] mutation(String[][] individual);
+    Set<Individual> mutation(Set<Individual> population);
 }

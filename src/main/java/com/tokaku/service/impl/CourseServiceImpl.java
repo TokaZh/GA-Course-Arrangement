@@ -23,8 +23,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Set<Course> selectCourseByGrade(String majorId, String term) {
-        return courseMapper.selectCourseByGrade(majorId, term);
+    public Set<Course> selectCourseByTerm(String majorId, int term) {
+        return courseMapper.selectCourseByTerm(majorId, term);
     }
 
 //    @Override

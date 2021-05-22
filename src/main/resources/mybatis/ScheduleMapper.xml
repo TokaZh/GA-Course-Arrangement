@@ -5,7 +5,9 @@
 <mapper namespace="com.tokaku.mapper.ScheduleMapper">
 
     <resultMap id="ScheduleMap" type="Schedule">
-        <id property="scheduleId" column="schedule_id"/>
+        <result property="majorId" column="major_id"/>
+        <result property="grade" column="grade"/>
+        <result property="classNum" column="classnum"/>
         <result property="courseId" column="course_id"/>
         <result property="teacherId" column="teacher_id"/>
         <result property="classId" column="class_id"/>
@@ -14,17 +16,40 @@
     </resultMap>
 
 
-    <select id="selectScheduleByClassId" parameterType="int" resultMap="ScheduleMap">
+    <select id="selectSchedule" parameterType="Object" resultMap="ScheduleMap">
         select *
         from schedule
-        where class_id = #{classId}
+        where major_id = #{majorId}
+          and term = #{grade}
+          and classnum = #{classNum}
+          and time_part = ${timePart}
     </select>
 
-    <select id="selectScheduleByTeacherId" parameterType="int" resultMap="ScheduleMap">
+    <insert id="addSchedule" parameterType="Schedule">
+        insert into schedule(major_id, term, classnum, course_id, time_part, teacher_id, classroom_id)
+        values (#{majorId}, ${grade}, #{classNum}, #{courseId}, #{timePart}, #{teacherId}, #{classRoomId})
+    </insert>
+
+    <select id="selectClassScheduleList" parameterType="Object" resultMap="ScheduleMap">
         select *
         from schedule
-        where teacher_id = #{teacherId}
+        where major_id = #{majorId}
+          and term = #{term}
+          and classnum = #{classNum}
     </select>
+
+    <delete id="deleteScheduleByGrade" parameterType="Object">
+        delete
+        from schedule
+        where major_id = #{majorId}
+          and term = #{term}
+    </delete>
+
+    <!--    <select id="selectScheduleByTeacherId" parameterType="int" resultMap="ScheduleMap">-->
+    <!--        select *-->
+    <!--        from schedule-->
+    <!--        where teacher_id = #{teacherId}-->
+    <!--    </select>-->
 
     <!--    <select id="queryStuByLimit" resultType="Student" parameterType="map">-->
     <!--        select * from db_school.tb_stu  limit #{startPage},#{pageSize}-->
@@ -33,9 +58,7 @@
     <!--&lt;!&ndash;    <select id="queryStuById" resultType="Student">&ndash;&gt;-->
     <!--&lt;!&ndash;        select * from db_school.tb_stu where studyid = #{studyid}&ndash;&gt;-->
     <!--&lt;!&ndash;    </select>&ndash;&gt;-->
-    <!--    <insert id="addStu" parameterType="Student">-->
-    <!--        insert into db_school.tb_stu(sno,name,password,grade,class) values (#{sno},#{name},#{password},#{grade},#{clazz})-->
-    <!--    </insert>-->
+
     <!--    <update id="updateStu" parameterType="Student">-->
     <!--        update db_school.tb_stu-->
     <!--        <set>-->
@@ -58,9 +81,6 @@
     <!--        where sno = #{sno}-->
     <!--    </update>-->
 
-    <!--    <delete id="deleteStu" parameterType="Student">-->
-    <!--        delete from db_school.tb_stu where sno=#{sno}-->
-    <!--    </delete>-->
 
     <!--    <select id="querySize" resultType="int">-->
     <!--        select count(*) from db_school.tb_stu-->

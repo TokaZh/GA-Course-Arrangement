@@ -25,50 +25,40 @@
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="col-sm-12">
-        <div class="ibox">
+        <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>自动排课</h5>
             </div>
             <div class="ibox-content">
-                <form method="post" th:action="@{/arrangement/step3}" class="wizard-big">
-                    <div class="row">
-                        <div class="form-group col-sm-3">
-                            <label for="majorId0">专业号</label>
-                            <input th:class="form-control" id="majorId0" name="majorId0"
-                                   th:value="${major.getMajorId()}" readonly>
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <label for="majorName">专业名</label>
-                            <input th:class="form-control" id="majorName" name="majorName"
-                                   th:value="${major.getMajorName()}" readonly>
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <label for="term0">学期</label>
-                            <input th:class="form-control" id="term0" name="term0"
-                                   th:value="${term}" readonly>
-                        </div>
-                        <div class="form-group col-sm-3 text-center">
-                            <button type="submit" class="btn btn-primary">排课</button>
-                        </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="majorName">专业名</label>
+                        <input th:class="form-control" id="majorName" name="majorName"
+                               th:value="${session.major.getMajorName()}" readonly>
                     </div>
-                </form>
-            </div>
-        </div>
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <div class="btn-group-sm" id="toolbar" role="group">
-                    <!--                    <a class="btn btn-success" onclick="modalClick('add')">-->
-                    <!--                        <i class="fa fa-plus"></i> 新增-->
-                    <!--                    </a>-->
-                    <a class="btn btn-success" data-toggle="modal" data-target="#add">
-                        <i class="fa fa-plus"></i> 新增
-                    </a>
-                    <!--                    <a class="btn btn-warning" href="/arrangement/step3">-->
-                    <!--                        <i class="fa fa-download"></i> 下一步-->
-                    <!--                    </a>-->
+                    <div class="col-sm-3">
+                        <label for="term0">学期</label>
+                        <input th:class="form-control" id="term0" name="term0"
+                               th:value="${session.term}" readonly>
+                    </div>
+
+                    <div class="col-xs-1 pull-right">
+                        <a th:href="@{/arrangement/step3}" class="btn btn-primary">
+                            <i class="fa fa-spinner"></i> 排课
+                        </a>
+                    </div>
+                    <div class="col-xs-1 pull-right">
+                        <a class="btn btn-success" data-toggle="modal" data-target="#add">
+                            <i class="fa fa-plus"></i> 新增
+                        </a>
+                    </div>
+                    <div class="col-xs-1 pull-right">
+                        <a th:href="@{/arrangement}" class="btn btn-default">
+                            <i class="fa fa-backward"></i> 返回
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="ibox-content">
+                <hr class="hr-line-solid">
                 <table class="table table-striped table-bordered table-hover dataTables-example"
                        id="editable">
                     <thead>
@@ -145,7 +135,7 @@
 </div>
 <div class="modal inmodal" id="add" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
-        <form method="post" class="form-horizontal m-t" action="/arrangement/savePlan">
+        <form method="post" class="form-horizontal m-t" action="/arrangement/addPlan">
             <div class="modal-content animated fadeIn">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
@@ -196,8 +186,8 @@
                                 <label class="col-sm-3 control-label" for="majorId">专业：</label>
                                 <div class="col-sm-8">
                                     <select id="majorId" name="majorId" th:class="form-control" readonly>
-                                        <option th:value="${major.getMajorId()}"
-                                                th:text="${major.getMajorName()}" selected>请选择专业
+                                        <option th:value="${session.major.getMajorId()}"
+                                                th:text="${session.major.getMajorName()}" selected>请选择专业
                                         </option>
                                     </select>
                                 </div>
@@ -206,8 +196,8 @@
                                 <label class="col-sm-3 control-label" for="term">学期：</label>
                                 <div class="col-sm-8">
                                     <select th:class="form-control" name="term" id="term" readonly>
-                                        <option th:value="${term}"
-                                                th:text="${term}" selected></option>
+                                        <option th:value="${session.term}"
+                                                th:text="${session.term}" selected></option>
                                     </select>
                                 </div>
                             </div>

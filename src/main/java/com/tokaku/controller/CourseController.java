@@ -43,6 +43,7 @@ public class CourseController {
         model.addAttribute("majorMap", majorMap);
         Set<Major> majorSet = majorService.selectMajorList();
         model.addAttribute("majorSet", majorSet);
+
         return "/course/course";
     }
 
