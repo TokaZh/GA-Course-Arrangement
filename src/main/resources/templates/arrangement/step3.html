@@ -69,7 +69,7 @@
                                         <span th:text="${session.schedule[timepart][classnum]}"></span>
                                         <a th:class="${session.schedule[timepart][classnum]}!=null ? 'pull-right btn btn-success btn-xs fa fa-edit' : ''"
                                            th:text="${session.schedule[timepart][classnum]}!=null ? ' 编辑' : ''"
-                                           th:href="@{/arrangement/} + ${timepart} +'/'+${classnum}"></a>
+                                           th:href="@{/arrangement/edit/} + ${timepart} +'/'+${classnum}"></a>
                                     </td>
                                 </tr>
                                 </tbody>

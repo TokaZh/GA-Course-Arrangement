@@ -9,6 +9,7 @@ import java.util.Set;
 @Mapper
 @Repository
 public interface MajorMapper {
+
     Set<Major> selectMajorList();
 
     String selectMajorNameByMajorId(String majorId);

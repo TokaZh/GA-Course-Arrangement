@@ -1,11 +1,10 @@
 package com.tokaku.controller;
 
 import com.tokaku.pojo.Course;
-import com.tokaku.pojo.Individual;
 import com.tokaku.pojo.Major;
 import com.tokaku.pojo.Schedule;
+import com.tokaku.service.AutoCoreService;
 import com.tokaku.service.CourseService;
-import com.tokaku.service.GeneticAlgorithmService;
 import com.tokaku.service.MajorService;
 import com.tokaku.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 public class ArrangementController {
@@ -36,19 +38,26 @@ public class ArrangementController {
     public void MajorService(MajorService majorService) {
         this.majorService = majorService;
     }
-
-    GeneticAlgorithmService geneticAlgorithmService;
-
-    @Autowired
-    public void GeneticAlgorithmService(GeneticAlgorithmService geneticAlgorithmService) {
-        this.geneticAlgorithmService = geneticAlgorithmService;
-    }
+//
+//    GeneticAlgorithmService geneticAlgorithmService;
+//
+//    @Autowired
+//    public void GeneticAlgorithmService(GeneticAlgorithmService geneticAlgorithmService) {
+//        this.geneticAlgorithmService = geneticAlgorithmService;
+//    }
 
     ScheduleService scheduleService;
 
     @Autowired
-    public void ScheduleMapper(ScheduleService scheduleService) {
+    public void ScheduleService(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
+    }
+
+    AutoCoreService autoCoreService;
+
+    @Autowired
+    public void AutoCoreService(AutoCoreService autoCoreService) {
+        this.autoCoreService = autoCoreService;
     }
 
     @RequestMapping("arrangement")
@@ -70,8 +79,6 @@ public class ArrangementController {
         session.setAttribute("major", new Major(majorId, majorService.selectMajorNameByMajorId(majorId)));
         session.setAttribute("term", term);
         session.setAttribute("classNum", classNum);
-        System.out.println(term);
-        System.out.println(classNum);
         //获取专业、年级对应的课程计划
         Set<Course> courses = courseService.selectCourseByTerm(majorId, Integer.parseInt(term));
         model.addAttribute("courses", courses);
@@ -88,55 +95,30 @@ public class ArrangementController {
         int term = Integer.parseInt((String) session.getAttribute("term"));
         int classNum = Integer.parseInt((String) session.getAttribute("classNum"));
 
-
-        //搜索班级数
-        //排课   //获得专业号和学期——>学期转为学年 今年年份-学期/2
+        //排课
         Set<Course> courses = courseService.selectCourseByTerm(major.getMajorId(), term);
-        //2.排课
-        HashMap<String, Integer> gene = geneticAlgorithmService.initGene(courses, 25);
-        Individual individual = geneticAlgorithmService.initIndividual(classNum, 25, gene);
-        String[][] schedule = individual.getSchedule();
-        String[][] sche = new String[25][classNum];
-        List<Schedule> scheduleList = new ArrayList<>();
+        String[][] schedule = autoCoreService.AutoArrangementCourse(courses, 4);
+        //教师 教室未匹配
+        //保存到数据库
+        scheduleService.deleteScheduleByGrade(major.getMajorId(), term);
+        scheduleService.addScheduleList(schedule, major.getMajorId(), term);
 
-
+        //将行列互换 便于网页端浏览
+        String[][] output = new String[25][classNum];
         HashMap<String, String> courseMap = new HashMap<>();
-        for (Course cours : courses) {
-            courseMap.put(cours.getCourseId(), cours.getCourseName());
+        for (Course course : courses) {
+            courseMap.put(course.getCourseId(), course.getCourseName());
         }
         for (int classnum = 0; classnum < schedule.length; classnum++) {
             for (int timepart = 0; timepart < schedule[classnum].length; timepart++) {
-                sche[timepart][classnum] = courseMap.get(schedule[classnum][timepart]);
+                output[timepart][classnum] = courseMap.get(schedule[classnum][timepart]);
             }
         }
-        session.setAttribute("schedule", sche);
-        //保存到数据库
-        //教师 教室未匹配
-        //       专业-年级 => 年级下所有班级id
-        String majorId = major.getMajorId();
-        //先删除专业-年级所有课表
-        scheduleService.deleteScheduleByGrade(majorId, term);
-        //保存
-        // 然后将String[][]转为List<Schedule>存入
+        session.setAttribute("schedule", output);
 
-//        scheduleMapper.deleteScheduleByClassId()
         return "arrangement/step3";
     }
 
-    //手动调课
-    @GetMapping("/arrangement/edit/{classNum}/{timaPart}")
-    public String editSchedule(HttpServletRequest request,
-                               @PathVariable("classNum") String classNum,
-                               @PathVariable("timaPart") String timaPart,
-                               Model model) {
-        HttpSession session = request.getSession();
-        Major major = (Major) session.getAttribute("major");
-        String term = (String) session.getAttribute("term");
-
-//        Course course = courseService.selectCourseByCourseId(courseId);
-//        model.addAttribute("course", course);
-        return "/arrangement/step3";
-    }
 
 
     //添加课程计划
@@ -147,7 +129,6 @@ public class ArrangementController {
         HttpSession session = request.getSession();
         Major major = (Major) session.getAttribute("major");
         int term = Integer.parseInt((String) session.getAttribute("term"));
-        System.out.println(course);
         if (!courseService.addCourse(course)) {
             try {
                 response.setContentType("text/html;charset=utf-8");
@@ -202,5 +183,90 @@ public class ArrangementController {
         Set<Course> courses = courseService.selectCourseByTerm(major.getMajorId(), term);
         model.addAttribute("courses", courses);
         return "arrangement/step2";
+    }
+
+
+    //手动调课
+    @GetMapping("/arrangement/edit/{classNum}/{timePart}")
+    public String editSchedule(HttpServletRequest request,
+                               @PathVariable("classNum") String clazz,
+                               @PathVariable("timePart") String part,
+                               Model model) {
+        HttpSession session = request.getSession();
+        Major major = (Major) session.getAttribute("major");
+        int term = Integer.parseInt((String) session.getAttribute("term"));
+        int classNum = Integer.parseInt((String) session.getAttribute("classNum"));
+
+        Schedule schedule = scheduleService.selectSchedule(
+                major.getMajorId(),
+                term,
+                Integer.parseInt(clazz),
+                Integer.parseInt(part));
+        Course course = courseService.selectCourseByCourseId(schedule.getCourseId());
+        Schedule[][] schedules = scheduleService.selectSchedule(major.getMajorId(),
+                term,
+                classNum);
+        Set<Integer> nullPart = new HashSet<>();
+        //将行列互换 便于网页端浏览
+        int[] sign = new int[25];
+        for (int classnum = 0; classnum < schedules.length; classnum++) {
+            for (int timepart = 0; timepart < schedules[classnum].length; timepart++) {
+                if (schedules[classnum][timepart] != null) {
+                    if (classnum == Integer.parseInt(clazz)) {
+                        sign[timepart] = 1;
+                    } else if (schedules[classnum][timepart].getCourseId().equals(schedule.getCourseId())) {
+                        sign[timepart] = 1;
+                    }
+                }
+            }
+
+        }
+        for (int i = 0; i < sign.length; i++) {
+            if (sign[i] == 0) {
+                nullPart.add(i);
+            }
+        }
+
+        model.addAttribute("course", course);
+        model.addAttribute("schedule", schedule);
+        model.addAttribute("nullPart", nullPart);
+        session.setAttribute("schedule", schedule);
+        return "/arrangement/edit2";
+    }
+
+
+    @RequestMapping("arrangement/saveSchedule")
+    public String saveSchedule(HttpServletRequest request,
+                               @RequestParam("newPart") String newPart) {
+        HttpSession session = request.getSession();
+        Schedule schedule = (Schedule) session.getAttribute("schedule");
+        scheduleService.updateSchedule(schedule, Integer.parseInt(newPart));
+        return "redirect:/arrangement/schedule";
+    }
+
+    @RequestMapping("arrangement/schedule")
+    public String schedule(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Major major = (Major) session.getAttribute("major");
+        int term = Integer.parseInt((String) session.getAttribute("term"));
+        int classNum = Integer.parseInt((String) session.getAttribute("classNum"));
+        Schedule[][] schedule = scheduleService.selectSchedule(major.getMajorId(), term, classNum);
+        Set<Course> courses = courseService.selectCourseByTerm(major.getMajorId(), term);
+
+        //将行列互换 便于网页端浏览
+        String[][] output = new String[25][classNum];
+        HashMap<String, String> courseMap = new HashMap<>();
+        for (Course course : courses) {
+            courseMap.put(course.getCourseId(), course.getCourseName());
+        }
+        for (int classnum = 0; classnum < schedule.length; classnum++) {
+            for (int timepart = 0; timepart < schedule[classnum].length; timepart++) {
+                if (schedule[classnum][timepart] != null)
+                    output[timepart][classnum] = courseMap.get(schedule[classnum][timepart].getCourseId());
+            }
+        }
+        session.setAttribute("schedule", output);
+
+        return "arrangement/step3";
     }
 }

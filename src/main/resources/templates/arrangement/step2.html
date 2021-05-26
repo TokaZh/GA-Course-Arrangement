@@ -68,6 +68,7 @@
                         <th>类型</th>
                         <th>学分</th>
                         <th>学时</th>
+                        <th>教师</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -78,6 +79,7 @@
                         <td th:text="${course.getType()==0?'理论课':'实践课'}"></td>
                         <td th:text="${course.getScore()}"></td>
                         <td th:text="${course.getTime()}"></td>
+                        <td th:text="${course.getTeacherId()}"></td>
                         <td>
                             <div class="btn-group-sm" id="editbar" role="group">
                                 <a class="btn btn-success btn-xs"
@@ -98,6 +100,7 @@
                         <th>类型</th>
                         <th>学分</th>
                         <th>学时</th>
+                        <th>教师</th>
                         <th>操作</th>
                     </tr>
                     </tfoot>
@@ -108,31 +111,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form method="post" action="importCourseExcel" enctype="multipart/form-data">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Excel批量添加</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <a onclick="$.table.importTemplate()" class="btn btn-default btn-xs">
-                        <i class="fa fa-file-excel"></i> 下载模板
-                    </a>
-                    <input type="file" name="file">
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
-                    <button type="submit" class="btn btn-primary pull-right">提交</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 <div class="modal inmodal" id="add" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <form method="post" class="form-horizontal m-t" action="/arrangement/addPlan">
@@ -155,11 +133,10 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="type">类型：</label>
                                 <div class="col-sm-8">
-                                    <!--                    <input id="type" name="type" class="form-control" type="text" required>-->
                                     <select id="type" name="type" th:class="form-control" required>
-                                        <option value="" selected>请选择课程类型</option>
                                         <option value="0">理论课</option>
                                         <option value="1">实验课</option>
+                                        <option value="2">户外课</option>
                                     </select>
                                 </div>
                             </div>
@@ -201,6 +178,12 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="teacherId">教师号：</label>
+                                <div class="col-sm-8">
+                                    <input th:class="form-control" name="teacherId" id="teacherId" required>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -215,9 +198,8 @@
         </form>
     </div>
 </div>
+
 <!-- 全局js -->
-
-
 <script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
 <script th:src="@{/js/bootstrap.min.js?v=3.3.7}"></script>
 <script th:src="@{/ruoyi/js/ry-ui.js?v=4.6.0}"></script>

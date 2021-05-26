@@ -25,6 +25,6 @@ public class Schedule {
     //教师id 分配（排课后由可以负责该课程的教师分配）
     private String teacherId;
     //教室id 分配
-    private String classRoomId;
+    private String roomId;
 
 }

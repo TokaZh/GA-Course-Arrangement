@@ -24,9 +24,11 @@
         from student
     </select>
 
-    <!--    <select id="queryStuByLimit" resultType="Student" parameterType="map">-->
-    <!--        select * from db_school.tb_stu  limit #{startPage},#{pageSize}-->
-    <!--    </select>-->
+    <select id="selectStudentById" resultMap="StudentMap" parameterType="String">
+        select *
+        from student
+        where student_id = #{studentId}
+    </select>
 
     <!--&lt;!&ndash;    <select id="queryStuById" resultType="Student">&ndash;&gt;-->
     <!--&lt;!&ndash;        select * from db_school.tb_stu where studyid = #{studyid}&ndash;&gt;-->

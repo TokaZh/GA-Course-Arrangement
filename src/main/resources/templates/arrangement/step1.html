@@ -22,46 +22,47 @@
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="col">
-        <div class="ibox">
+        <div class="ibox col-sm-3">
             <div class="ibox-title">
                 <h5>自动排课</h5>
             </div>
             <div class="ibox-content">
-                <form method="post" action="arrangement/step2" class="wizard-big">
-                    <div class="row">
-                        <div class="form-group col-sm-3">
-                            <label for="majorId">选择专业</label>
-                            <select id="majorId" name="majorId" th:class="form-control" required>
-                                <option
-                                        th:each="major:${majorSet}"
-                                        th:value="${major.getMajorId()}"
-                                        th:text="${major.getMajorName()}"
-                                >
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <label for="term">选择学期</label>
-                            <select th:class="form-control" name="term" id="term" required>
-                                <option th:each="grade : ${#numbers.sequence(1,8)}"
-                                        th:value="${grade}"
-                                        th:text="'第'+${grade}+'学期----'+${year-(grade+1)/2}+'届'"
-                                ></option>
-                            </select>
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <label for="classNum">选择班级数</label>
-                            <select th:class="form-control" name="classNum" id="classNum" required>
-                                <option th:each="classnum : ${#numbers.sequence(1,9)}"
-                                        th:value="${classnum}"
-                                        th:text="${classnum}"
-                                        th:selected="${classnum eq 4}"
-                                ></option>
-                            </select>
-                        </div>
-                        <div class="form-group col-sm-3 text-center">
-                            <button type="submit" class="btn btn-primary">课程计划管理</button>
-                        </div>
+                <form method="post" action="arrangement/step2" class="">
+                    <div class="form-group">
+                        <label for="majorId">选择专业</label>
+                        <select id="majorId" name="majorId" th:class="form-control" required>
+                            <option
+                                    th:each="major:${majorSet}"
+                                    th:value="${major.getMajorId()}"
+                                    th:text="${major.getMajorName()}"
+                            >
+                            </option>
+                        </select>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label for="term">选择学期</label>
+                        <select th:class="form-control" name="term" id="term" required>
+                            <option th:each="grade : ${#numbers.sequence(1,8)}"
+                                    th:value="${grade}"
+                                    th:text="'第'+${grade}+'学期----'+${year-(grade+1)/2}+'届'"
+                            ></option>
+                        </select>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label for="classNum">选择班级数</label>
+                        <select th:class="form-control" name="classNum" id="classNum" required>
+                            <option th:each="classnum : ${#numbers.sequence(1,9)}"
+                                    th:value="${classnum}"
+                                    th:text="${classnum}"
+                                    th:selected="${classnum eq 4}"
+                            ></option>
+                        </select>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary">课程计划管理</button>
                     </div>
                 </form>
             </div>

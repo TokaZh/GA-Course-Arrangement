@@ -6,13 +6,13 @@
 
     <resultMap id="ScheduleMap" type="Schedule">
         <result property="majorId" column="major_id"/>
-        <result property="grade" column="grade"/>
+        <result property="term" column="term"/>
         <result property="classNum" column="classnum"/>
         <result property="courseId" column="course_id"/>
         <result property="teacherId" column="teacher_id"/>
         <result property="classId" column="class_id"/>
         <result property="timePart" column="time_part"/>
-        <result property="classRoomId" column="classroom_id"/>
+        <result property="roomId" column="room_id"/>
     </resultMap>
 
 
@@ -20,14 +20,14 @@
         select *
         from schedule
         where major_id = #{majorId}
-          and term = #{grade}
+          and term = #{term}
           and classnum = #{classNum}
           and time_part = ${timePart}
     </select>
 
     <insert id="addSchedule" parameterType="Schedule">
-        insert into schedule(major_id, term, classnum, course_id, time_part, teacher_id, classroom_id)
-        values (#{majorId}, ${grade}, #{classNum}, #{courseId}, #{timePart}, #{teacherId}, #{classRoomId})
+        insert into schedule(major_id, term, classnum, course_id, time_part, teacher_id, room_id)
+        values (#{majorId}, ${term}, #{classNum}, #{courseId}, #{timePart}, #{teacherId}, #{roomId})
     </insert>
 
     <select id="selectClassScheduleList" parameterType="Object" resultMap="ScheduleMap">
@@ -45,41 +45,43 @@
           and term = #{term}
     </delete>
 
-    <!--    <select id="selectScheduleByTeacherId" parameterType="int" resultMap="ScheduleMap">-->
-    <!--        select *-->
-    <!--        from schedule-->
-    <!--        where teacher_id = #{teacherId}-->
-    <!--    </select>-->
+    <select id="selectScheduleByRoomId" parameterType="Object" resultMap="ScheduleMap">
+        select *
+        from schedule
+        where room_id = #{roomId}
+          and time_part = #{timePart}
+    </select>
 
-    <!--    <select id="queryStuByLimit" resultType="Student" parameterType="map">-->
-    <!--        select * from db_school.tb_stu  limit #{startPage},#{pageSize}-->
-    <!--    </select>-->
+    <select id="selectScheduleSetByTeacher" parameterType="String" resultMap="ScheduleMap">
+        select *
+        from schedule
+        where teacher_id = #{teacherId}
+    </select>
+
+    <select id="selectScheduleSetByRoom" parameterType="String" resultMap="ScheduleMap">
+        select *
+        from schedule
+        where room_id = #{roomId}
+    </select>
+
+    <select id="selectScheduleAllList" resultMap="ScheduleMap" parameterType="Object">
+        select *
+        from schedule
+        where major_id = #{majorId}
+          and term = #{term}
+    </select>
 
     <!--&lt;!&ndash;    <select id="queryStuById" resultType="Student">&ndash;&gt;-->
     <!--&lt;!&ndash;        select * from db_school.tb_stu where studyid = #{studyid}&ndash;&gt;-->
     <!--&lt;!&ndash;    </select>&ndash;&gt;-->
 
-    <!--    <update id="updateStu" parameterType="Student">-->
-    <!--        update db_school.tb_stu-->
-    <!--        <set>-->
-    <!--            <if test="sno">-->
-    <!--                sno = #{sno},-->
-    <!--            </if>-->
-    <!--            <if test="name">-->
-    <!--                name = #{name},-->
-    <!--            </if>-->
-    <!--            <if test="password">-->
-    <!--                password = #{password},-->
-    <!--            </if>-->
-    <!--            <if test="grade">-->
-    <!--                age = #{grade},-->
-    <!--            </if>-->
-    <!--            <if test="clazz">-->
-    <!--                clazz = #{clazz},-->
-    <!--            </if>-->
-    <!--        </set>-->
-    <!--        where sno = #{sno}-->
-    <!--    </update>-->
+    <update id="updateSchedule">
+        update schedule
+        set time_part = #{param2}
+        where major_id = #{param1.majorId}
+          and term = #{param1.term}
+          and time_part = #{param1.timePart}
+    </update>
 
 
     <!--    <select id="querySize" resultType="int">-->

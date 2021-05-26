@@ -90,9 +90,10 @@ public class ImportExcelServiceImpl implements ImportExcelService {
         int type = Integer.parseInt(getCellValue(sheet, row, colNum++));
         int courseScore = Integer.parseInt(getCellValue(sheet, row, colNum++));
         int time = Integer.parseInt(getCellValue(sheet, row, colNum++));
-        String majorId = String.valueOf(getCellValue(sheet, row, colNum));
-        int grade = Integer.parseInt(getCellValue(sheet, row, colNum));
-        return new Course(courseId, courseName, type, courseScore, time, majorId, grade);
+        String majorId = String.valueOf(getCellValue(sheet, row, colNum++));
+        int grade = Integer.parseInt(getCellValue(sheet, row, colNum++));
+        String teacherId = String.valueOf(getCellValue(sheet, row, colNum));
+        return new Course(courseId, courseName, type, courseScore, time, majorId, grade, teacherId);
 
     }
 }

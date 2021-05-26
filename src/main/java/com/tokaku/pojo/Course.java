@@ -17,6 +17,6 @@ public class Course {
     private int time;//学期学时
     private String majorId;//专业
     private int term;
-//    private int step;
+    private String teacherId;
 
 }

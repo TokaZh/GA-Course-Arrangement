@@ -44,9 +44,9 @@ public class ImportExcelController {
 
         //遍历数据
         for (Course bean : list) {
-            System.out.println(bean.toString());
             //批量插入list到数据库
-            courseService.addCourse(bean);
+            courseService.addCourseHasId(bean);
+
         }
         return "redirect:/course";
     }

@@ -1,6 +1,6 @@
 package com.tokaku.mapper;
 
-import com.tokaku.pojo.ClassRoom;
+import com.tokaku.pojo.Room;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -9,11 +9,13 @@ import java.util.List;
 @Mapper
 @Repository
 public interface RoomMapper {
-    int addRoom();
+    int addRoom(Room room);
 
-    int updateRoom();
+    int updateRoom(Room room);
 
-    int deleteRoom();
+    List<Room> selectRoomList();
 
-    List<ClassRoom> selectRoomList();
+    Room selectRoomById(String roomId);
+
+    int deleteRoom(String roomId);
 }

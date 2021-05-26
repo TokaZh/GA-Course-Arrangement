@@ -6,6 +6,7 @@ import com.tokaku.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Set;
 
 @Service
@@ -27,6 +28,16 @@ public class CourseServiceImpl implements CourseService {
         return courseMapper.selectCourseByTerm(majorId, term);
     }
 
+    @Override
+    public HashMap<String, String> selectCourseMapByTerm(String majorId, int term) {
+        Set<Course> courseSet = courseMapper.selectCourseByTerm(majorId, term);
+        HashMap<String, String> resultMap = new HashMap<>();
+        for (Course course : courseSet) {
+            resultMap.put(course.getCourseId(), course.getCourseName());
+        }
+        return resultMap;
+    }
+
 //    @Override
 //    public List<Course> queryCourseByGradeId(Grade grade) {
 //        return courseMapper.selectCourseByGradeId(grade.getGradeId());
@@ -46,6 +57,16 @@ public class CourseServiceImpl implements CourseService {
     public boolean addCourse(Course course) {
         if (courseMapper.selectCourse(course) == null) {
             courseMapper.addCourse(course);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean addCourseHasId(Course course) {
+        if (courseMapper.selectCourse(course) == null) {
+            courseMapper.addCourseHasId(course);
             return true;
         } else {
             return false;

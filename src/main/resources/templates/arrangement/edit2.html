@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>新增课程</title>
+    <title>修改时间</title>
 
     <link rel="shortcut icon" th:href="@{/favicon.ico}">
 
@@ -19,29 +19,35 @@
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="col-sm-6">
-        <form method="post" class="form-horizontal m-t" id="signupForm" action="/course/saveCourse">
+        <form method="post" class="form-horizontal m-t" id="signupForm" action="/arrangement/saveSchedule">
             <div class="form-group">
-                <label class="col-sm-3 control-label" for="courseName">教室号：</label>
+                <label class="col-sm-3 control-label" for="courseName">课名：</label>
                 <div class="col-sm-8">
                     <input id="courseName" name="courseName" class="form-control" type="text"
-                           th:value="${room.getRoomId()}" required>
+                           th:value="${course.getCourseName()}" required>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label" for="type">学期：</label>
+                <label class="col-sm-3 control-label" for="newPart">调整时间：</label>
                 <div class="col-sm-8">
-                    <select id="type" name="type" th:class="form-control" required>
-                        <option th:selected="${course.getType() eq 0}" value="0">理论课</option>
-                        <option th:selected="${course.getType() eq 1}" value="1">实验课</option>
-                        <option th:selected="${course.getType() eq 2}" value="2">户外课</option>
+                    <select id="newPart" name="newPart" th:class="form-control" required>
+                        <option
+                                th:each="part:${nullPart}"
+                                th:value="${part}"
+                                th:text="${'周'+(part/5+1)+' 第'+(part%5+1)+'节'}"
+                        >
+                        </option>
                     </select>
                 </div>
             </div>
 
-            <!--隐藏,使用父窗口调用-->
-            <div class="layui-form-item" hidden>
+            <div class="form-group">
                 <div class="layui-input-block">
-                    <button id="permissionSubmit" class="layui-btn" type="submit" lay-submit lay-filter="*">
+                    <button class="btn btn-default btn-xs" href="arrangement/schedule">
+                        返回
+                    </button>
+                    <button id="permissionSubmit" class="btn btn-success btn-xs" type="submit" lay-submit
+                            lay-filter="*">
                         保存
                     </button>
                 </div>

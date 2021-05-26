@@ -26,11 +26,9 @@ public class AutoCoreServiceImpl implements AutoCoreService {
         //生成种群
         Set<Individual> population = service.initPopulation(courses, classNum, POPULATION_SIZE);
         //进行n次进化
-//        int n = 0;
-//        while (n<=N){
-//            population = service.evolution(population);
-//            n++;
-//        }
+        for (int i = 0; i < N; i++) {
+            population = service.evolution(population);
+        }
 
         //二维数组课表，填入
         //筛选出适应度最高的课表

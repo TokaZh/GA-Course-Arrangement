@@ -11,50 +11,56 @@ import java.util.List;
 
 @Service
 public class TeacherServiceImpl implements TeacherService {
-
-    @Autowired
     private TeacherMapper teacherMapper;
 
-//    @Override
-//    public int querySize() {
-//        return studentMapper.querySize();
-//    }
-//
-//    @Override
-//    public Student queryStuById(String studyid) {
-//        return studentMapper.queryStuById(studyid);
-//    }
-//
-//    @Override
-//    public List<Student> queryStuByLimit(int startpage, int pageSize) {
-//        return studentMapper.queryStuByLimit(startpage, pageSize);
-//    }
+    @Autowired
+    public void TeacherMapper(TeacherMapper teacherMapper) {
+        this.teacherMapper = teacherMapper;
+    }
+
+    @Override
+    public int TeacherCheck(String teacherId, String teacherPassword) {
+        Teacher teacher = teacherMapper.selectTeacherById(teacherId);
+        //用户名不存在
+        if (teacher == null) {
+            return -1;
+        } else {
+            if (teacher.getTeacherPassword().equals(teacherPassword)) {
+                //登录成功
+                return 1;
+            } else {
+                //密码错误
+                return 0;
+            }
+        }
+    }
+
+    @Override
+    public Teacher selectTeacherById(String teacherId) {
+        return teacherMapper.selectTeacherById(teacherId);
+    }
 
     @Override
     public List<Teacher> selectTeacherList() {
         return teacherMapper.selectTeacherList();
     }
 
-//    @Override
-//    public boolean addStu(Student student) {
-//        if (studentMapper.queryStuById(student.getStudyid()) == null) {
-//            int age = AgeUtils.getAge(student.getBirth());
-//            student.setAge(age);
-//            studentMapper.addStu(student);
-//            return true;
-//        } else
-//            return false;
-//    }
-//
-//    @Override
-//    public int updateStu(Student student) {
-//        int age = AgeUtils.getAge(student.getBirth());
-//        student.setAge(age);
-//        return studentMapper.updateStu(student);
-//    }
-//
-//    @Override
-//    public int deleteStu(String studyid) {
-//        return studentMapper.deleteStu(studyid);
-//    }
+    @Override
+    public int addTeacher(Teacher teacher) {
+        if (teacherMapper.selectTeacherById(teacher.getTeacherId()) == null) {
+            teacherMapper.addTeacher(teacher);
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public int deleteTeacher(String teacherId) {
+        return teacherMapper.deleteTeacher(teacherId);
+    }
+
+    @Override
+    public int updateTeacher(Teacher teacher) {
+        return teacherMapper.updateTeacher(teacher);
+    }
 }

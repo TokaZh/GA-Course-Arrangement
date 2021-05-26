@@ -19,46 +19,36 @@ public class StudentServiceImpl implements StudentService {
         this.studentMapper = studentMapper;
     }
 
-//    @Override
-//    public int querySize() {
-//        return studentMapper.querySize();
-//    }
-//
-//    @Override
-//    public Student queryStuById(String studyid) {
-//        return studentMapper.queryStuById(studyid);
-//    }
-//
-//    @Override
-//    public List<Student> queryStuByLimit(int startpage, int pageSize) {
-//        return studentMapper.queryStuByLimit(startpage, pageSize);
-//    }
+    @Override
+    public Student selectStudentById(String studentId) {
+        return studentMapper.selectStudentById(studentId);
+    }
 
     @Override
     public List<Student> selectStudentList() {
         return studentMapper.selectStudentList();
     }
 
-    //    @Override
-//    public boolean addStu(Student student) {
-//        if (studentMapper.queryStuById(student.getStudyid()) == null) {
-//            int age = AgeUtils.getAge(student.getBirth());
-//            student.setAge(age);
-//            studentMapper.addStu(student);
-//            return true;
-//        } else
-//            return false;
-//    }
-//
-//    @Override
-//    public int updateStu(Student student) {
-//        int age = AgeUtils.getAge(student.getBirth());
-//        student.setAge(age);
-//        return studentMapper.updateStu(student);
-//    }
-//
     @Override
     public int deleteStudent(String sno) {
         return studentMapper.deleteStu(sno);
     }
+
+    @Override
+    public int StudentCheck(String studentId, String studentPassword) {
+        Student student = studentMapper.selectStudentById(studentId);
+        //用户名不存在
+        if (student == null) {
+            return -1;
+        } else {
+            if (student.getStudentPassword().equals(studentPassword)) {
+                //登录成功
+                return 1;
+            } else {
+                //密码错误
+                return 0;
+            }
+        }
+    }
+
 }

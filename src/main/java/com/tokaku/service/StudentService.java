@@ -6,17 +6,11 @@ import java.util.List;
 
 public interface StudentService {
 
-//    int querySize();
-//
-//    Student queryStuById(String studyid);
-//
-//    List<Student> queryStuByLimit(int startpage, int pageSize);
+    Student selectStudentById(String studentId);
 
     List<Student> selectStudentList();
 
-    //    boolean addStu(Student student);
-//
-//    int updateStu(Student stu);
-//
     int deleteStudent(String sno);
+
+    int StudentCheck(String username, String password);
 }

@@ -37,6 +37,7 @@
                     <select id="type" name="type" th:class="form-control" required>
                         <option th:selected="${course.getType() eq 0}" value="0">理论课</option>
                         <option th:selected="${course.getType() eq 1}" value="1">实验课</option>
+                        <option th:selected="${course.getType() eq 2}" value="2">户外课</option>
                     </select>
                 </div>
             </div>

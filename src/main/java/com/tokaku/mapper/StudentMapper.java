@@ -9,6 +9,9 @@ import java.util.List;
 @Mapper
 @Repository
 public interface StudentMapper {
+
+    Student selectStudentById(String studentId);
+
     Student StudentCheck(String studentId, String studentPassword);
 
     int addStu();
@@ -18,4 +21,5 @@ public interface StudentMapper {
     int deleteStu(String sno);
 
     List<Student> selectStudentList();
+
 }

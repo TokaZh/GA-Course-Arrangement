@@ -47,13 +47,6 @@ public class CourseController {
         return "/course/course";
     }
 
-    @GetMapping("/course/add")
-    public String add(Model model) {
-        Set<Major> majorSet = majorService.selectMajorList();
-        model.addAttribute("majorSet", majorSet);
-        return "/course/add";
-    }
-
     //添加课程
     @PostMapping("/course/saveCourse")
     public String addCourse(Course course, HttpServletResponse response) {
@@ -93,7 +86,6 @@ public class CourseController {
 
     @PostMapping("/course/updateCourse")
     public String updateStu(Course course) {
-        System.out.println(course);
         courseService.updateCourse(course);
         return "redirect:/course";
     }

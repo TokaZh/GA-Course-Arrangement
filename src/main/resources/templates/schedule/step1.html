@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>表单向导</title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min.css?v=3.3.7" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="col">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>选择班级</h5>
+            </div>
+            <div class="ibox-content">
+                <form method="post" action="schedule/step2" class="wizard-big">
+                    <div class="row">
+                        <div class="form-group col-sm-3">
+                            <label for="majorId">选择专业</label>
+                            <select id="majorId" name="majorId" th:class="form-control" required>
+                                <option
+                                        th:each="major:${majorSet}"
+                                        th:value="${major.getMajorId()}"
+                                        th:text="${major.getMajorName()}"
+                                >
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="term">选择学期</label>
+                            <select th:class="form-control" name="term" id="term" required>
+                                <option th:each="grade : ${#numbers.sequence(1,8)}"
+                                        th:value="${grade}"
+                                        th:text="'第'+${grade}+'学期----'+${year-(grade+1)/2}+'届'"
+                                ></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="classNum">选择班级</label>
+                            <select th:class="form-control" name="classNum" id="classNum" required>
+                                <option th:each="classnum : ${#numbers.sequence(1,4)}"
+                                        th:value="${classnum-1}"
+                                        th:text="${classnum}"
+                                ></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-3 text-center">
+                            <button type="submit" class="btn btn-primary">查看班级课表</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>教室课表</h5>
+            </div>
+            <div class="ibox-content">
+                <form method="post" action="schedule/room" class="wizard-big">
+                    <div class="row">
+                        <div class="form-group col-sm-3">
+                            <label for="roomId">选择教室</label>
+                            <select id="roomId" name="roomId" th:class="form-control" required>
+                                <option
+                                        th:each="room:${rooms}"
+                                        th:value="${room.getRoomId()}"
+                                        th:text="${room.getType()==0? room.getRoomId()+' 多媒体教室':room.getRoomId()+' 实验室'}"
+                                >
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-3 text-center">
+                            <button type="submit" class="btn btn-primary">查看教室课表</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>教师课表</h5>
+            </div>
+            <div class="ibox-content">
+                <form method="post" action="schedule/teacher" class="wizard-big">
+                    <div class="row">
+                        <div class="form-group col-sm-3">
+                            <label for="teacherId">选择教师</label>
+                            <select id="teacherId" name="teacherId" th:class="form-control" required>
+                                <option
+                                        th:each="teacher:${teachers}"
+                                        th:value="${teacher.getTeacherId()}"
+                                        th:text="${teacher.getTeacherName()}"
+                                >
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-3 text-center">
+                            <button type="submit" class="btn btn-primary">查看教师课表</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.7"></script>
+
+<!-- Steps -->
+<script src="js/plugins/staps/jquery.steps.min.js"></script>
+
+<!-- Jquery Validate -->
+<script src="js/plugins/validate/jquery.validate.min.js"></script>
+<script src="js/plugins/validate/messages_zh.min.js"></script>
+
+</body>
+
+</html>

@@ -23,4 +23,6 @@ public interface CourseMapper {
     Course selectCourse(Course course);
 
     Set<Course> selectCourseByTerm(String majorId, int term);
+
+    int addCourseHasId(Course course);
 }

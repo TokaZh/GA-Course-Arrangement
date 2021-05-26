@@ -25,7 +25,7 @@ public class StudentController {
     public String GetStudents(Model model) {
         List<Student> students = stuService.selectStudentList();
         model.addAttribute("students", students);
-        return "student";
+        return "user";
     }
 
     //    @PostMapping("/stu")

@@ -34,7 +34,7 @@
                     <a class="btn btn-success" data-toggle="modal" data-target="#add">
                         <i class="fa fa-plus"></i> 新增
                     </a>
-                    <a class="btn btn-info" href="upload">
+                    <a class="btn btn-info" data-toggle="modal" data-target="#addCourseModal">
                         <i class="fa fa-upload"></i> 导入
                     </a>
                     <a class="btn btn-warning" onclick="$.table.exportExcel()">
@@ -54,7 +54,7 @@
                         <th>学时</th>
                         <th>专业</th>
                         <th>学期</th>
-                        <th>科任老师</th>
+                        <!--                        <th>科任老师</th>-->
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -67,7 +67,7 @@
                         <td th:text="${course.getTime()}"></td>
                         <td th:text="${majorMap.get(course.getMajorId())}"></td>
                         <td th:text="${course.getTerm()}"></td>
-                        <!--                        <td th:text="${course}"></td>-->
+                        <!--                        <td th:text="${course.getTeacherId()}"></td>-->
                         <td>
                             <div class="btn-group-sm" id="editbar" role="group">
                                 <!--                                th:href="@{/updateCourse/} + ${course}"-->
@@ -105,28 +105,7 @@
     </div>
 </div>
 
-<div class="modal inmodal" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <form method="post" class="form-horizontal m-t" id="signupForm" action="/course/addCourse">
-
-            <div class="modal-content animated bounceInRight">
-                <iframe scrolling="auto" allowtransparency="true"
-                        id="childIFrame" name="childIFrame"
-                        class="" frameborder="0"
-                        style="height: 641px;" width="100%">
-                </iframe>
-
-                <div th:class="modal-footer">
-                    <div class="layui-layer-btn layui-layer-btn-">
-                        <button class="btn btn-primary layui-layer-btn0" onclick="getValue()" type="">确定</button>
-                        <a class="btn btn-default layui-layer-btn1" data-dismiss="modal">关闭</a>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog"
+<div class="modal inmodal" id="addCourseModal" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form method="post" action="importCourseExcel" enctype="multipart/form-data">
@@ -180,6 +159,7 @@
                                             <option value="" selected>请选择课程类型</option>
                                             <option value="0">理论课</option>
                                             <option value="1">实验课</option>
+                                            <option value="2">户外课</option>
                                         </select>
                                     </div>
                                 </div>
@@ -228,96 +208,10 @@
                                         </select>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="layui-input-block">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
-                        <button type="submit" class="btn btn-primary pull-right">提交</button>
-                    </div>
-                </div>
-
-            </div>
-        </form>
-    </div>
-</div>
-<div class="modal inmodal" id="edit" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <form method="post" class="form-horizontal m-t" action="/course/saveCourse">
-
-            <div class="modal-content animated fadeIn">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
-                            class="sr-only">Close</span></button>
-                    <h4 class="modal-title">添加课程</h4>
-                </div>
-                <div class="modal-body" style="height:400px">
-                    <div class="wrapper wrapper-content animated fadeInRight">
-                        <div class="register col-sm-11">
-                            <form method="post" class="form-horizontal m-t" action="/course/saveCourse">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="courseName">课名：</label>
+                                    <label class="col-sm-3 control-label" for="teacherId">教师号：</label>
                                     <div class="col-sm-8">
-                                        <input id="courseName" name="courseName" class="form-control" type="text"
-                                               required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="type">类型：</label>
-                                    <div class="col-sm-8">
-                                        <!--                    <input id="type" name="type" class="form-control" type="text" required>-->
-                                        <select id="type" name="type" th:class="form-control" required>
-                                            <option value="" selected>请选择课程类型</option>
-                                            <option value="0">理论课</option>
-                                            <option value="1">实验课</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="score">学分：</label>
-                                    <div class="col-sm-8">
-                                        <select id="score" name="score" th:class="form-control" required>
-                                            <option value="" selected>请选择学分</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="time">学时：</label>
-                                    <div class="col-sm-8">
-                                        <input id="time" name="time" class="form-control" type="text" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="majorId">专业：</label>
-                                    <div class="col-sm-8">
-                                        <select id="majorId" name="majorId" th:class="form-control" required>
-                                            <option value="" selected>请选择专业</option>
-                                            <option
-                                                    th:each="major:${majorSet}"
-                                                    th:value="${major.getMajorId()}"
-                                                    th:text="${major.getMajorName()}"
-                                            >
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="term">学期：</label>
-                                    <div class="col-sm-8">
-                                        <select th:class="form-control" name="term" id="term" required>
-                                            <option value="" selected>请选择学期</option>
-                                            <option th:each="grade : ${#numbers.sequence(1,8)}"
-                                                    th:value="${grade}"
-                                                    th:text="${grade}"
-                                            ></option>
-                                        </select>
+                                        <input th:class="form-control" name="teacherId" id="teacherId" required>
                                     </div>
                                 </div>
                             </form>
@@ -335,7 +229,6 @@
         </form>
     </div>
 </div>
-
 <!-- 全局js -->
 
 

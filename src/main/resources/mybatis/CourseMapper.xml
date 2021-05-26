@@ -12,6 +12,7 @@
         <result property="type" column="type"/>
         <result property="majorId" column="major_id"/>
         <result property="term" column="term"/>
+        <result property="teacherId" column="teacher_id"/>
     </resultMap>
 
     <select id="selectCourseList" resultMap="CourseMap">
@@ -40,8 +41,13 @@
     </select>
 
     <insert id="addCourse" parameterType="Course" useGeneratedKeys="true" keyProperty="courseId" keyColumn="course_id">
-        insert into course(course_name, type, score, time, major_id, term)
-        values (#{courseName}, #{type}, #{score}, #{time}, #{majorId}, #{term})
+        insert into course(course_name, type, score, time, major_id, term, teacher_id)
+        values (#{courseName}, #{type}, #{score}, #{time}, #{majorId}, #{term}, #{teacherId})
+    </insert>
+
+    <insert id="addCourseHasId" parameterType="Course">
+        insert into course(course_id, course_name, type, score, time, major_id, term, teacher_id)
+        values (#{courseId}, #{courseName}, #{type}, #{score}, #{time}, #{majorId}, #{term}, #{teacherId})
     </insert>
 
     <delete id="deleteCourseByCourseId" parameterType="String">

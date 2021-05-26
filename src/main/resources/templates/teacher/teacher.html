@@ -26,11 +26,8 @@
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <div class="btn-group-sm" id="toolbar" role="group">
-                    <a class="btn btn-success" onclick="modalClick('add')">
+                    <a class="btn btn-success" data-toggle="modal" data-target="#add">
                         <i class="fa fa-plus"></i> 新增
-                    </a>
-                    <a class="btn btn-info" href="upload">
-                        <i class="fa fa-upload"></i> 导入
                     </a>
                 </div>
             </div>
@@ -81,52 +78,53 @@
     </div>
 </div>
 
-<div class="modal inmodal" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal inmodal" id="add" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
-        <form method="post" class="form-horizontal m-t" id="signupForm" action="/course/addCourse">
+        <form method="post" class="form-horizontal m-t" action="/teacher/saveTeacher">
 
-            <div class="modal-content animated bounceInRight">
-                <iframe scrolling="auto" allowtransparency="true"
-                        id="childIFrame" name="iframe-add"
-                        class="" frameborder="0"
-                        style="height: 641px;" width="100%">
-                </iframe>
-
-                <div th:class="modal-footer">
-                    <div class="layui-layer-btn layui-layer-btn-">
-                        <button class="btn btn-primary layui-layer-btn0" onclick="getValue()" type="">确定</button>
-                        <a class="btn btn-default layui-layer-btn1" data-dismiss="modal">关闭</a>
+            <div class="modal-content animated fadeIn">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">Close</span></button>
+                    <h4 class="modal-title">添加教师</h4>
+                </div>
+                <div class="modal-body" style="height:400px">
+                    <div class="wrapper wrapper-content animated fadeInRight">
+                        <div class="register col-sm-11">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="teacherName">教师名：</label>
+                                <div class="col-sm-8">
+                                    <input id="teacherName" name="teacherName" class="form-control" type="text"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="telephone">电话：</label>
+                                <div class="col-sm-8">
+                                    <input id="telephone" name="telephone" class="form-control" type="text" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="courseId">课程：</label>
+                                <div class="col-sm-8">
+                                    <input id="courseId" name="courseId" class="form-control" type="text" required>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
-</div>
-<div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form method="post" action="importCourseExcel" enctype="multipart/form-data">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Excel批量添加</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <a onclick="$.table.importTemplate()" class="btn btn-default btn-xs">
-                        <i class="fa fa-file-excel"></i> 下载模板
-                    </a>
-                    <input type="file" name="file">
-                </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
-                    <button type="submit" class="btn btn-primary pull-right">提交</button>
+                    <div class="layui-input-block">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary pull-right">提交</button>
+                    </div>
                 </div>
+
             </div>
         </form>
     </div>
 </div>
+
 
 <!-- 全局js -->
 

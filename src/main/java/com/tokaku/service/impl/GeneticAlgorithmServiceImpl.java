@@ -117,35 +117,20 @@ public class GeneticAlgorithmServiceImpl implements GeneticAlgorithmService {
         for (Integer classNum : signMap.keySet()) {
             Set<Integer> classSign = signMap.get(classNum);
             if (classSign.isEmpty()) continue;
-//            String firstPart = null;
-//            int prePart = -1;
+            String firstPart = null;
+            int prePart = -1;
             for (Integer timePart : classSign) {
-//                if (prePart < 0) {
-//                    firstPart = individual[classNum][timePart];
-//                } else {
-//                    String temp = individual[classNum][prePart];
-//                    individual[classNum][prePart] = individual[classNum][timePart];
-//                    individual[classNum][timePart] = temp;
-//                }
-//                prePart = timePart;
-                boolean flag = false;
-                for (int i = timePart / 5 * 5; i < (timePart / 5 + 1) * 5; i++) {
-                    if (individual[classNum][timePart] == null && i != timePart) {
-                        flag = true;
-                        break;
-                    }
+                if (prePart < 0) {
+                    firstPart = individual[classNum][timePart];
+                } else {
+                    String temp = individual[classNum][prePart];
+                    individual[classNum][prePart] = individual[classNum][timePart];
+                    individual[classNum][timePart] = temp;
                 }
-                if (flag) {
-                    String temp = individual[classNum][timePart];
-                    individual[classNum][timePart] = null;
-                    int i = initTimePart(5) + (timePart / 5) * 5;
-                    while (individual[classNum][i] != null || i == timePart) {
-                        i = initTimePart(5) + (timePart / 5) * 5;
-                    }
-                    individual[classNum][i] = temp;
-                }
+                prePart = timePart;
+
             }
-//            individual[classNum][prePart] = firstPart;
+            individual[classNum][prePart] = firstPart;
         }
 
         return individual;
@@ -157,11 +142,11 @@ public class GeneticAlgorithmServiceImpl implements GeneticAlgorithmService {
         double f1 = 0, f2 = 0, f3 = 0;
         int num = 0, num2 = 0, num3 = 0;
         double[] weight = new double[]{
-                0.9, 1, 0.9, 1, 1,
-                0.8, 0.9, 0.8, 0.9, 0.9,
-                0.7, 0.8, 0.7, 0.8, 0.8,
-                0.6, 0.7, 0.6, 0.7, 0.4,
-                0.5, 0.6, 0.5, 0.6, 0.3
+                0.8, 1, 1, 1, 1,
+                0.8, 1, 1, 1, 1,
+                0.6, 0.6, 0.7, 0.8, 0.2,
+                0.6, 0.6, 0.4, 0.6, 0.2,
+                0.3, 0.3, 0.3, 0.3, 0.1
         };
 
         //1. 课程越靠前加分越多
@@ -229,9 +214,7 @@ public class GeneticAlgorithmServiceImpl implements GeneticAlgorithmService {
             }
         }
 
-        //4.一天一个班级只能上同一课程一次
-
-        return f1 / num + f2 / num2 + f3 / num3;
+        return (f1 / num + f2 / num2 + f3 / num3) / 3;
     }
 
     //生成种群并计算适应度

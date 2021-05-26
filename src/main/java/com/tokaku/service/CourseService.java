@@ -2,6 +2,7 @@ package com.tokaku.service;
 
 import com.tokaku.pojo.Course;
 
+import java.util.HashMap;
 import java.util.Set;
 
 public interface CourseService {
@@ -14,20 +15,12 @@ public interface CourseService {
 
     boolean addCourse(Course course);
 
+    boolean addCourseHasId(Course course);
+
     int updateCourse(Course course);
 
     Set<Course> selectCourseByTerm(String majorId, int term);
 
-//    int querySize();
-//
-//    Student queryStuById(String studyid);
-//
-//    List<Student> queryStuByLimit(int startpage, int pageSize);
+    HashMap<String, String> selectCourseMapByTerm(String majorId, int term);
 
-
-//    boolean addStu(Student student);
-//
-//    int updateStu(Student stu);
-//
-//    int deleteStu(String studyid);
 }

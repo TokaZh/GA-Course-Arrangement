@@ -8,7 +8,7 @@
         <result property="teacherName" column="teacher_name"/>
         <result property="telephone" column="telephone"/>
         <result property="teacherPassword" column="teacher_password"/>
-        <result property="course_id" column="courseId"/>
+        <result property="courseId" column="course_id"/>
     </resultMap>
 
     <select id="TeacherCheck" parameterType="String" resultMap="TeacherMap">
@@ -23,41 +23,42 @@
         from db_school.teacher
     </select>
 
-    <!--    <select id="queryStuByLimit" resultType="Student" parameterType="map">-->
-    <!--        select * from db_school.tb_stu  limit #{startPage},#{pageSize}-->
-    <!--    </select>-->
+    <insert id="addTeacher" parameterType="Teacher" useGeneratedKeys="true" keyProperty="teacherId"
+            keyColumn="teacher_id">
+        insert into teacher(teacher_name, telephone, course_id)
+        values (#{teacherName}, #{telephone}, #{courseId})
+    </insert>
 
-    <!--&lt;!&ndash;    <select id="queryStuById" resultType="Student">&ndash;&gt;-->
-    <!--&lt;!&ndash;        select * from db_school.tb_stu where studyid = #{studyid}&ndash;&gt;-->
-    <!--&lt;!&ndash;    </select>&ndash;&gt;-->
-    <!--    <insert id="addStu" parameterType="Student">-->
-    <!--        insert into db_school.tb_stu(sno,name,password,grade,class) values (#{sno},#{name},#{password},#{grade},#{clazz})-->
-    <!--    </insert>-->
-    <!--    <update id="updateStu" parameterType="Student">-->
-    <!--        update db_school.tb_stu-->
-    <!--        <set>-->
-    <!--            <if test="sno">-->
-    <!--                sno = #{sno},-->
-    <!--            </if>-->
-    <!--            <if test="name">-->
-    <!--                name = #{name},-->
-    <!--            </if>-->
-    <!--            <if test="password">-->
-    <!--                password = #{password},-->
-    <!--            </if>-->
-    <!--            <if test="grade">-->
-    <!--                age = #{grade},-->
-    <!--            </if>-->
-    <!--            <if test="clazz">-->
-    <!--                clazz = #{clazz},-->
-    <!--            </if>-->
-    <!--        </set>-->
-    <!--        where sno = #{sno}-->
-    <!--    </update>-->
+    <select id="selectTeacherById" resultMap="TeacherMap" parameterType="String">
+        select *
+        from teacher
+        where teacher_id = #{teacherId}
+    </select>
 
-    <!--    <delete id="deleteStu" parameterType="Student">-->
-    <!--        delete from db_school.tb_stu where sno=#{sno}-->
-    <!--    </delete>-->
+    <update id="updateTeacher" parameterType="Teacher">
+        update teacher
+        <set>
+            <if test="teacherName">
+                teacher_name = #{teacherName},
+            </if>
+            <if test="telephone">
+                telephone = #{telephone},
+            </if>
+            <if test="teacherPassword">
+                teacher_password = #{teacherPassword},
+            </if>
+            <if test="courseId">
+                course_id = #{courseId},
+            </if>
+        </set>
+        where teacher_id = #{teacherId}
+    </update>
+
+    <delete id="deleteTeacher" parameterType="String">
+        delete
+        from teacher
+        where teacher_id = #{teacherId}
+    </delete>
 
     <!--    <select id="querySize" resultType="int">-->
     <!--        select count(*) from db_school.tb_stu-->

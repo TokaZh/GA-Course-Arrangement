@@ -1,9 +1,13 @@
 package com.tokaku;
 
+import com.tokaku.mapper.ScheduleMapper;
+import com.tokaku.mapper.TeacherMapper;
 import com.tokaku.pojo.Course;
+import com.tokaku.pojo.Schedule;
 import com.tokaku.service.AutoCoreService;
 import com.tokaku.service.CourseService;
 import com.tokaku.service.ImportExcelService;
+import com.tokaku.service.ScheduleService;
 import com.tokaku.service.impl.GeneticAlgorithmServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
@@ -73,11 +77,27 @@ class ApplicationTests {
         }
     }
 
+    @Autowired
+    ScheduleService scheduleService;
+    @Autowired
+    ScheduleMapper scheduleMapper;
+
+    @Autowired
+    TeacherMapper teacherMapper;
+
     @Test
     void test1() {
-        String[] s = new String[5];
-        System.out.println(s == null);
-        s[0] = "1";
-        System.out.println(s == null);
+        Schedule[][] schedules = scheduleService.selectSchedule("1", 1, 4);
+        Schedule s = new Schedule();
+        for (Schedule[] schedule : schedules) {
+            for (Schedule schedule1 : schedule) {
+                if (schedule1 != null) {
+                    s = schedule1;
+                    break;
+                }
+            }
+        }
+        System.out.println(s);
+        scheduleMapper.updateSchedule(s, 6);
     }
 }

@@ -5,8 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class ClassRoom {
-    private int roomId;
-    private int size;
+public class Room {
+    private String roomId;
     private int type;
 }
